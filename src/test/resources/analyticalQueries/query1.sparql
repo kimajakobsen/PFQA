@@ -1,0 +1,13 @@
+PREFIX : <http://example.com/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+
+SELECT (SUM(?revenue) as ?sum)
+WHERE {
+?fact :revenue ?revenue ;
+:orderDate ?dayLevel .
+?dayLevel :year ?yearNumber .
+FILTER (?yearNumber = "2016")
+}
+GROUP BY
+?year
