@@ -1,0 +1,1 @@
+select DISTINCT ?s { GRAPH <http://example.com/provenance/> {?s ?o ?p . ?s a <http://www.w3.org/ns/prov#Entity> . FILTER NOT EXISTS {  ?o a <http://www.w3.org/ns/prov#Activity> } } }
