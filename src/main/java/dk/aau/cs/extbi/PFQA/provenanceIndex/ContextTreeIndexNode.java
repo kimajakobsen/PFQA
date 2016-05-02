@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.apache.jena.rdf.model.Resource;
 
-public class ContextTreeIndexNode<T>  {
+public class ContextTreeIndexNode<T> implements java.io.Serializable  {
 
+	private static final long serialVersionUID = 1L;
 	T data;
     ContextTreeIndexNode<T> parent;
     List<ContextTreeIndexNode<T>> children;

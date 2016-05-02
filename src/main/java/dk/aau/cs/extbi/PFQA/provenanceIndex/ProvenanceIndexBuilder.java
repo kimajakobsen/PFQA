@@ -1,8 +1,10 @@
 package dk.aau.cs.extbi.PFQA.provenanceIndex;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
@@ -12,13 +14,7 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.tdb.TDBFactory;
-
-import com.google.gson.Gson;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
 
@@ -31,119 +27,123 @@ public class ProvenanceIndexBuilder {
 	}
 	
 	public ProvenanceIndex build() {
+		ProvenanceIndex index = null;
 		if (getFileName(indexPath).equals("contextTreeIndex")) {
-			Gson gson = new Gson();  
-		     
 			try {  
-				BufferedReader br = new BufferedReader( new FileReader(indexPath));  
-				ContextTreeIndex index = gson.fromJson(br, ContextTreeIndex.class);  
+				FileInputStream fileIn = new FileInputStream(indexPath);
+				ObjectInputStream in = new ObjectInputStream(fileIn);
+				System.out.println("Loading index");
+				index = (ProvenanceIndex) in.readObject();
+				in.close();
+				fileIn.close();
 				return index; 
 		 	} catch (IOException e) {
+		 		System.out.println("Building a new index");
 		 		return buildNewContextTreeIndex();
-		 	}
+		 	} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
-		return null;
+		throw new IllegalArgumentException("The supplied index is not of known type ("+getFileName(indexPath)+")");
 	}
 
 	private ProvenanceIndex buildNewContextTreeIndex() {
 		// Tree is hardcoded to SSB qb4olap structure
-		ContextTreeIndexNode<Resource> root = new ContextTreeIndexNode<Resource>(createResource("root"));
+		ContextTreeIndexNode<String> root = new ContextTreeIndexNode<String>("root");
 		{
-			root.addChild(createResource("quantity"));
-            root.addChild(createResource("extendedprice"));
-            root.addChild(createResource("ordtotalprice"));
-            root.addChild(createResource("discount"));
-            root.addChild(createResource("revenue"));
-            root.addChild(createResource("supplycost"));
-            root.addChild(createResource("tax"));
+			root.addChild(createURI("quantity"));
+            root.addChild(createURI("extendedprice"));
+            root.addChild(createURI("ordtotalprice"));
+            root.addChild(createURI("discount"));
+            root.addChild(createURI("revenue"));
+            root.addChild(createURI("supplycost"));
+            root.addChild(createURI("tax"));
             
-            ContextTreeIndexNode<Resource> customer = root.addChild(createResource("customer"));
+            ContextTreeIndexNode<String> customer = root.addChild(createURI("customer"));
             {
-                customer.addChild(createResource("custkey"));
-                customer.addChild(createResource("name"));
-                customer.addChild(createResource("address"));
-                customer.addChild(createResource("city"));
-                customer.addChild(createResource("nation"));
-                customer.addChild(createResource("region"));
-                customer.addChild(createResource("phone"));
-                customer.addChild(createResource("mktsegment"));
+                customer.addChild(createURI("custkey"));
+                customer.addChild(createURI("name"));
+                customer.addChild(createURI("address"));
+                customer.addChild(createURI("city"));
+                customer.addChild(createURI("nation"));
+                customer.addChild(createURI("region"));
+                customer.addChild(createURI("phone"));
+                customer.addChild(createURI("mktsegment"));
                 
             }
-            ContextTreeIndexNode<Resource> part = root.addChild(createResource("part"));
+            ContextTreeIndexNode<String> part = root.addChild(createURI("part"));
             {
-                part.addChild(createResource("partkey"));
-                part.addChild(createResource("name"));
-                part.addChild(createResource("mfgr"));
-                part.addChild(createResource("category"));
-                part.addChild(createResource("brand"));
-                part.addChild(createResource("color"));
-                part.addChild(createResource("type"));
-                part.addChild(createResource("size"));
-                part.addChild(createResource("container"));
+                part.addChild(createURI("partkey"));
+                part.addChild(createURI("name"));
+                part.addChild(createURI("mfgr"));
+                part.addChild(createURI("category"));
+                part.addChild(createURI("brand"));
+                part.addChild(createURI("color"));
+                part.addChild(createURI("type"));
+                part.addChild(createURI("size"));
+                part.addChild(createURI("container"));
             }
-            ContextTreeIndexNode<Resource> supplier = root.addChild(createResource("supplier"));
+            ContextTreeIndexNode<String> supplier = root.addChild(createURI("supplier"));
             {
-                supplier.addChild(createResource("supkey"));
-                supplier.addChild(createResource("name"));
-                supplier.addChild(createResource("address"));
-                supplier.addChild(createResource("city"));
-                supplier.addChild(createResource("nation"));
-                supplier.addChild(createResource("region"));
-                supplier.addChild(createResource("phone"));
+                supplier.addChild(createURI("supkey"));
+                supplier.addChild(createURI("name"));
+                supplier.addChild(createURI("address"));
+                supplier.addChild(createURI("city"));
+                supplier.addChild(createURI("nation"));
+                supplier.addChild(createURI("region"));
+                supplier.addChild(createURI("phone"));
             }
-            ContextTreeIndexNode<Resource> orderDate = root.addChild(createResource("orderDate"));
+            ContextTreeIndexNode<String> orderDate = root.addChild(createURI("orderDate"));
             {
-                orderDate.addChild(createResource("datekey"));
-                orderDate.addChild(createResource("date"));
-                orderDate.addChild(createResource("dayofweek"));
-                orderDate.addChild(createResource("month"));
-                orderDate.addChild(createResource("year"));
-                orderDate.addChild(createResource("yeamonthnum"));
-                orderDate.addChild(createResource("yearmonth"));
-                orderDate.addChild(createResource("daynumweek"));
-                orderDate.addChild(createResource("daynummonth"));
-                orderDate.addChild(createResource("daynumyear"));
-                orderDate.addChild(createResource("monthnuminyear"));
-                orderDate.addChild(createResource("weeknuminyear"));
-                orderDate.addChild(createResource("sellingseason"));
-                orderDate.addChild(createResource("lastdayinweek"));
-                orderDate.addChild(createResource("notlastdayinmonth"));
-                orderDate.addChild(createResource("holiday"));
-                orderDate.addChild(createResource("weekday"));
+                orderDate.addChild(createURI("datekey"));
+                orderDate.addChild(createURI("date"));
+                orderDate.addChild(createURI("dayofweek"));
+                orderDate.addChild(createURI("month"));
+                orderDate.addChild(createURI("year"));
+                orderDate.addChild(createURI("yeamonthnum"));
+                orderDate.addChild(createURI("yearmonth"));
+                orderDate.addChild(createURI("daynumweek"));
+                orderDate.addChild(createURI("daynummonth"));
+                orderDate.addChild(createURI("daynumyear"));
+                orderDate.addChild(createURI("monthnuminyear"));
+                orderDate.addChild(createURI("weeknuminyear"));
+                orderDate.addChild(createURI("sellingseason"));
+                orderDate.addChild(createURI("lastdayinweek"));
+                orderDate.addChild(createURI("notlastdayinmonth"));
+                orderDate.addChild(createURI("holiday"));
+                orderDate.addChild(createURI("weekday"));
             }
-            ContextTreeIndexNode<Resource> commitDate = root.addChild(createResource("commitDate"));
+            ContextTreeIndexNode<String> commitDate = root.addChild(createURI("commitDate"));
             {
-                commitDate.addChild(createResource("datekey"));
-                commitDate.addChild(createResource("date"));
-                commitDate.addChild(createResource("dayofweek"));
-                commitDate.addChild(createResource("month"));
-                commitDate.addChild(createResource("year"));
-                commitDate.addChild(createResource("yeamonthnum"));
-                commitDate.addChild(createResource("yearmonth"));
-                commitDate.addChild(createResource("daynumweek"));
-                commitDate.addChild(createResource("daynummonth"));
-                commitDate.addChild(createResource("daynumyear"));
-                commitDate.addChild(createResource("monthnuminyear"));
-                commitDate.addChild(createResource("weeknuminyear"));
-                commitDate.addChild(createResource("sellingseason"));
-                commitDate.addChild(createResource("lastdayinweek"));
-                commitDate.addChild(createResource("notlastdayinmonth"));
-                commitDate.addChild(createResource("holiday"));
-                commitDate.addChild(createResource("weekday"));
-		    	
-		    }
+                commitDate.addChild(createURI("datekey"));
+                commitDate.addChild(createURI("date"));
+                commitDate.addChild(createURI("dayofweek"));
+                commitDate.addChild(createURI("month"));
+                commitDate.addChild(createURI("year"));
+                commitDate.addChild(createURI("yeamonthnum"));
+                commitDate.addChild(createURI("yearmonth"));
+                commitDate.addChild(createURI("daynumweek"));
+                commitDate.addChild(createURI("daynummonth"));
+                commitDate.addChild(createURI("daynumyear"));
+                commitDate.addChild(createURI("monthnuminyear"));
+                commitDate.addChild(createURI("weeknuminyear"));
+                commitDate.addChild(createURI("sellingseason"));
+                commitDate.addChild(createURI("lastdayinweek"));
+                commitDate.addChild(createURI("notlastdayinmonth"));
+                commitDate.addChild(createURI("holiday"));
+                commitDate.addChild(createURI("weekday"));
+            }
 		}
 		
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		dataset.begin(ReadWrite.READ) ;
 		//get cube
-		for (ContextTreeIndexNode<Resource> parent : root.getChildren()) {
-			parent.getData().getURI();
+		for (ContextTreeIndexNode<String> parent : root.getChildren()) {
 			if (parent.getChildren().size() == 0) {
 				addContextValues(dataset, parent);
 			}
 			else {
-				for (ContextTreeIndexNode<Resource> child : parent.getChildren()) {
+				for (ContextTreeIndexNode<String> child : parent.getChildren()) {
 					addContextValues(dataset, child);
 				}
 			}
@@ -151,25 +151,37 @@ public class ProvenanceIndexBuilder {
 		dataset.end();
 	
 		ProvenanceIndex pi = new ContextTreeIndex(root);
-		//Serialize to json and return the object
+		try {
+			SerilizeIndex(pi);
+		} catch (IOException e) {
+			System.out.println("Problem serializing: " + e);
+			e.printStackTrace();
+		}
 		return pi;
 	}
 
-	private void addContextValues(Dataset dataset,
-			ContextTreeIndexNode<Resource> parent) {
-		Query query = QueryFactory.create("SELECT ?G { GRAPH ?G { ?s <"+ parent.getData().getURI() +"> ?o . } } ");
+	private String createURI(String string) {
+		return Config.getNamespace()+string;
+	}
+
+	private void SerilizeIndex(ProvenanceIndex pi) throws IOException {
+		FileOutputStream fileOut = new FileOutputStream(indexPath);
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(pi);
+		out.close();
+		fileOut.close();
+	}
+
+	private void addContextValues(Dataset dataset,ContextTreeIndexNode<String> parent) {
+		Query query = QueryFactory.create("SELECT ?G { GRAPH ?G { ?s <"+ parent.getData() +"> ?o . } } ");
 		QueryExecution qexec = QueryExecutionFactory.create(query, dataset);
 		ResultSet results = qexec.execSelect() ;
 		for ( ; results.hasNext() ; ) {
 		  QuerySolution soln = results.nextSolution() ;
-		  Resource node  = ResourceFactory.createResource(soln.get("?G").toString());
-		  parent.addChild(node);
+		  parent.addChild(soln.get("?G").toString());
 		}
 	}
 
-	private Resource createResource(String name) {
-		return ResourceFactory.createResource(Config.getNamespace()+name);
-	}
 
 	private String getFileName(String indexPath) {
 		String[] split1 = indexPath.split("/");
