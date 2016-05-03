@@ -35,7 +35,10 @@ public class QueryProfile {
 		
 		if (whereClauseMatcher.find()) {
 		    String[] split = whereClauseMatcher.group(1).split("FILTER");
-		    String filterClause = split[1];
+		    String filterClause = null;
+		    if (split.length == 2) {
+		    	filterClause = split[1];
+			}
 		    String whereClause = split[0];
 		    String[] starPatterns = whereClause.split("\\.");
 		    
