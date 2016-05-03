@@ -93,7 +93,7 @@ public class ProvenanceIndexBuilder {
                 supplier.addChild(createURI("region"));
                 supplier.addChild(createURI("phone"));
             }
-            ContextTreeIndexNode<String> orderDate = root.addChild(createURI("orderDate"));
+            ContextTreeIndexNode<String> orderDate = root.addChild(createURI("orderdate"));
             {
                 orderDate.addChild(createURI("datekey"));
                 orderDate.addChild(createURI("date"));
@@ -113,7 +113,7 @@ public class ProvenanceIndexBuilder {
                 orderDate.addChild(createURI("holiday"));
                 orderDate.addChild(createURI("weekday"));
             }
-            ContextTreeIndexNode<String> commitDate = root.addChild(createURI("commitDate"));
+            ContextTreeIndexNode<String> commitDate = root.addChild(createURI("commitdate"));
             {
                 commitDate.addChild(createURI("datekey"));
                 commitDate.addChild(createURI("date"));
