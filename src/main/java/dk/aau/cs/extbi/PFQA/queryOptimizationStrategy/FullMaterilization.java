@@ -14,6 +14,7 @@ import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 
 public class FullMaterilization extends QueryOptimizationStrategy {
+	private String modelName = Config.getNamespace()+"fullMaterilized";
 
 	public FullMaterilization(ContextSet contextSetMinumum) {
 		super(contextSetMinumum);
@@ -27,12 +28,11 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 		Model resultModel = qexec.execConstruct() ;
 		qexec.close() ;
 			
-		dataset.addNamedModel(Config.getNamespace()+"fullMaterilized", resultModel);
+		dataset.addNamedModel(modelName, resultModel);
 		//System.out.println("writing " + resultModel.size() + " triples to "+ Config.getNamespace()+"fullMaterilized");
 		
 		dataset.commit();
 		dataset.end();
-		//Materilize cube
 	}
 	
 	private String createQuery() {
@@ -52,11 +52,17 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 			"}";
 		return query;
 	}
-
+	
 	@Override
 	public ResultSet execute(Query aq) {
-		// execute query on cube.
-		return null;
+		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
+		dataset.begin(ReadWrite.READ) ;
+		Model model = dataset.getNamedModel(modelName);
+		QueryExecution qexec = QueryExecutionFactory.create(aq, model) ;
+		ResultSet results = qexec.execSelect() ;
+		
+		dataset.commit();
+		dataset.end();
+		return results;
 	}
-
 }
