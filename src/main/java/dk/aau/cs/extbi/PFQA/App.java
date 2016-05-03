@@ -20,17 +20,17 @@ public class App
         Query aq = QueryFactory.read("src/test/resources/analyticalQueries/query1.sparql");
         QueryProfile qp = new QueryProfile(aq);
 
-        ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder("contextTreeIndex.json");
+        ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder("contextTreeIndex.ser");
         ProvenanceIndex pi = provenanceIndexBuilder.build(); 
 		ContextSet contextSetAP = pi.getContext(qp);	
 		
-		Query pq = QueryFactory.read(null);
+		Query pq = QueryFactory.read("src/test/resources/provenanceQueries/allContexts.sparql");
 		ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
 		ContextSet contextSetPQ = provenaceQueryExecutor.getContext(pq);
         
 		ContextSet contextSetMinumum = contextSetAP.intersect(contextSetPQ);
 		
-		QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder();
+		QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder("FullMaterilization");
 		QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetMinumum);
 		ResultSet result =  strategy.execute(aq);
 		ResultSetFormatter.out(result);
