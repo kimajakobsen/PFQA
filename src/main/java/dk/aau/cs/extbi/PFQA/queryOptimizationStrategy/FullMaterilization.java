@@ -23,18 +23,16 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 		dataset.begin(ReadWrite.WRITE) ;
 			
 		Query query = QueryFactory.create(queryString) ;
-		System.out.println(query);
 		QueryExecution qexec = QueryExecutionFactory.create(query, dataset) ;
 		Model resultModel = qexec.execConstruct() ;
 		qexec.close() ;
 			
 		dataset.addNamedModel(Config.getNamespace()+"fullMaterilized", resultModel);
-		System.out.println("writing " + resultModel.size() + " triples to "+ Config.getNamespace()+"fullMaterilized");
+		//System.out.println("writing " + resultModel.size() + " triples to "+ Config.getNamespace()+"fullMaterilized");
 		
 		dataset.commit();
 		dataset.end();
 		//Materilize cube
-		System.exit(0);
 	}
 	
 	private String createQuery() {
