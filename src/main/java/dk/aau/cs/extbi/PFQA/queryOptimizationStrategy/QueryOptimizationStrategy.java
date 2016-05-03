@@ -9,15 +9,13 @@ public abstract class QueryOptimizationStrategy {
 
 	protected ContextSet contextSet;
 
+	public QueryOptimizationStrategy(ContextSet contextSetMinumum) {
+		this.contextSet = contextSetMinumum;
+	}
+
 	public abstract ResultSet execute(Query aq) ;
 	
 	public ContextSet getContextSet() {
 		return contextSet;
 	}
-
-	public void setContextSet(ContextSet contextSet) {
-		this.contextSet = contextSet;
-	}
-
-
 }
