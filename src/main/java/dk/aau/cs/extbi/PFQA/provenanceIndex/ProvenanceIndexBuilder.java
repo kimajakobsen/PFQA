@@ -30,7 +30,7 @@ public class ProvenanceIndexBuilder {
 		ProvenanceIndex index = null;
 		if (getFileName(indexPath).equals("contextTreeIndex")) {
 			try {  
-				FileInputStream fileIn = new FileInputStream(indexPath);
+				FileInputStream fileIn = new FileInputStream(Config.getDatasetLocation()+indexPath);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				System.out.println("Loading index");
 				index = (ProvenanceIndex) in.readObject();
@@ -165,7 +165,7 @@ public class ProvenanceIndexBuilder {
 	}
 
 	private void SerilizeIndex(ProvenanceIndex pi) throws IOException {
-		FileOutputStream fileOut = new FileOutputStream(indexPath);
+		FileOutputStream fileOut = new FileOutputStream(Config.getDatasetLocation()+indexPath);
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(pi);
 		out.close();
