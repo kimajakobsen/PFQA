@@ -37,6 +37,7 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 			for (ContextTreeIndexNode<String> contextValue : tree.getChildren()) {
 				contextSet.add(contextValue.getData());
 			}
+			//System.out.println(predicatePath.get(index-1).getPredicate() + " is added, now there is "+ contextSet.getValues().size() + " contexts");
 			return contextSet;
 		}
 	}
