@@ -1,0 +1,21 @@
+PREFIX rdfh: <http://lod2.eu/schemas/rdfh#>
+SELECT ?d_year ?s_city ?p_brand1 SUM(?lo_revenue - ?lo_supplycost) AS ?sum_profit 
+WHERE {
+	?li a rdfh:lineorder ;
+	   rdfh:lo_orderdate ?lo_orderdate ;
+	   rdfh:lo_custkey ?lo_custkey ;
+	   rdfh:lo_partkey ?lo_partkey ;
+	   rdfh:lo_suppkey ?lo_suppkey ;
+	   rdfh:lo_revenue ?lo_revenue ;
+	   rdfh:lo_supplycost ?lo_supplycost .
+
+	?lo_custkey rdfh:c_region 'AMERICA' .
+	?lo_suppkey rdfh:s_city ?s_city .
+	?lo_suppkey rdfh:s_nation 'UNITED STATES' .
+	?lo_partkey rdfh:p_category 'MFGR#14' .  
+	?lo_partkey rdfh:p_brand1 ?p_brand1 .
+	?lo_orderdate rdfh:d_year ?d_year .
+	FILTER(?d_year = 1997 || ?d_year = 1998)
+}
+GROUP BY ?d_year ?s_city ?p_brand1 
+ORDER BY ?d_year ?s_city ?p_brand1

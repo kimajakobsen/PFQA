@@ -1,0 +1,18 @@
+PREFIX rdfh: <http://lod2.eu/schemas/rdfh#>
+SELECT ?c_city ?s_city ?d_year (SUM(?rdfh_lo_revenue) AS ?lo_revenue)
+WHERE {
+	?li a rdfh:lineorder ;
+	   rdfh:lo_orderdate ?lo_orderdate ;
+	   rdfh:lo_custkey ?lo_custkey ;
+	   rdfh:lo_suppkey ?lo_suppkey ;
+	   rdfh:lo_revenue ?rdfh_lo_revenue .
+	?lo_custkey rdfh:c_city ?c_city .
+	?lo_suppkey rdfh:s_city ?s_city . 
+	?lo_orderdate rdfh:d_year ?d_year .
+	?lo_orderdate rdfh:d_yearmonth ?d_yearmonth .
+
+	FILTER(?d_yearmonth = 'Dec1997')
+	FILTER((?c_city='UNITED KI1' || ?c_city='UNITED KI5') && (?s_city='UNITED KI1' || ?s_city='UNITED KI5'))
+}
+GROUP BY ?c_city ?s_city ?d_year 
+ORDER BY ASC(?d_year) DESC(?lo_revenue) 
