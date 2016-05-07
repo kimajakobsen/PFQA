@@ -23,7 +23,7 @@ public class ProvenanceIndexBuilder {
 	private String indexPath;
 
 	public ProvenanceIndexBuilder(String indexPath) {
-		this.indexPath = indexPath;
+		this.indexPath = indexPath+".ser";
 	}
 	
 	public ProvenanceIndex build() {
