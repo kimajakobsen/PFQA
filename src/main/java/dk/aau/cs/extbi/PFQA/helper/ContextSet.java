@@ -3,14 +3,18 @@ package dk.aau.cs.extbi.PFQA.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.aau.cs.extbi.PFQA.logger.Logger;
+
 public class ContextSet {
 	List<String> contextValues = new ArrayList<String>();
 
 	public ContextSet intersect(ContextSet contextSetPQ) {
-		//System.out.println("AQ cv: "+ contextValues.size());
-		//System.out.println("PQ cv: "+ contextSetPQ.getValues().size());
+		Logger logger = Logger.getInstance();
+		
+		logger.startIntersectContextSet();
 		contextValues.retainAll(contextSetPQ.getValues());
-		//System.out.println("intersect: "+this.getValues().size());
+		logger.endIntersectContextSet();
+		
 		return this;
 	}
 

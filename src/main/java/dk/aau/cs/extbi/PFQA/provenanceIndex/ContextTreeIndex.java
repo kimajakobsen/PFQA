@@ -3,6 +3,7 @@ package dk.aau.cs.extbi.PFQA.provenanceIndex;
 import java.util.ArrayList;
 
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
+import dk.aau.cs.extbi.PFQA.logger.Logger;
 import dk.aau.cs.extbi.PFQA.queryProfile.QueryProfile;
 import dk.aau.cs.extbi.PFQA.queryProfile.TriplePatternContainer;
 
@@ -17,11 +18,16 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 	
 	@Override
 	public ContextSet getContext(QueryProfile qp) {
+		Logger logger = Logger.getInstance();
 		ContextSet contextSet = new ContextSet();
+		
+		logger.startIndexLookup();
 		ArrayList<ArrayList<TriplePatternContainer>> pathStructure = qp.getPredicatePaths().getPaths();
 		for (ArrayList<TriplePatternContainer> predicatePath : pathStructure) {
 			contextSet.add(getTreeContextValue(predicatePath, 0, root));
 		}
+		logger.endIndexLookup();
+		
 		return contextSet;
 	}
 	

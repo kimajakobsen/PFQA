@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
 
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
+import dk.aau.cs.extbi.PFQA.logger.Logger;
 import dk.aau.cs.extbi.PFQA.provenanceQeuryExecutor.ProvenanceQueryExecutor;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategy;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategyBuilder;
-import dk.aau.cs.extbi.PFQA.queryProfile.QueryProfile;
 
 public class Experiment {
 	private ArrayList<Query> analyticalQueries = new ArrayList<Query>();
@@ -29,24 +28,30 @@ public class Experiment {
 	}
 
 	public void run() {
+		Logger logger = Logger.getInstance();
 		
 		for (Query analyticalQuery : analyticalQueries) {
-			QueryProfile queryProfile = new QueryProfile(analyticalQuery);
+			logger.startAnalyticalQueryContex(analyticalQuery);
 			
 			for (Query provenanceQuery : provenanceQueries) {
+				logger.startProvenanceQueryContext(provenanceQuery);
 				ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
 				ContextSet contextSetPQ = provenaceQueryExecutor.getContext(provenanceQuery);
 				
 				for (String strategyString : optimizationStrategies) {
+					logger.startOptimizationStrategyContext(strategyString);
 					
 					for (String index : provenanceIndices) {
-						QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,queryProfile, index);
+						logger.startProvenanceIndexContext(index);
+						QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
 						QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
 						ResultSet result =  strategy.execute(analyticalQuery);
-						ResultSetFormatter.out(result);
+						logger.setResult(result);
+						logger.commitResult();
 					}
 				}
 			}
 		}
+		logger.printToSystemOut();
 	}
 }

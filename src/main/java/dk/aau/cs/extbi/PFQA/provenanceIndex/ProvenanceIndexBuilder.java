@@ -17,6 +17,7 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.tdb.TDBFactory;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
+import dk.aau.cs.extbi.PFQA.logger.Logger;
 
 public class ProvenanceIndexBuilder {
 	
@@ -30,10 +31,15 @@ public class ProvenanceIndexBuilder {
 		ProvenanceIndex index = null;
 		if (getFileName(indexPath).equals("contextTreeIndex")) {
 			try {  
+				Logger logger = Logger.getInstance();
 				FileInputStream fileIn = new FileInputStream(Config.getDatasetLocation()+indexPath);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				System.out.println("Loading index");
+				
+				logger.startReadIndex();
 				index = (ProvenanceIndex) in.readObject();
+				logger.endReadIndex();
+				
 				in.close();
 				fileIn.close();
 				return index; 
@@ -49,6 +55,8 @@ public class ProvenanceIndexBuilder {
 
 	private ProvenanceIndex buildNewContextTreeIndex() {
 		// Tree is hardcoded to SSB qb4olap structure
+		Logger logger = Logger.getInstance();
+		logger.startBuildIndex();
 		ContextTreeIndexNode<String> root = new ContextTreeIndexNode<String>("root");
 		{
 			root.addChild(createURI("quantity"));
@@ -149,6 +157,7 @@ public class ProvenanceIndexBuilder {
 			}
 		}
 		dataset.end();
+		logger.endBuildIndex();
 	
 		ProvenanceIndex pi = new ContextTreeIndex(root);
 		try {
@@ -165,9 +174,12 @@ public class ProvenanceIndexBuilder {
 	}
 
 	private void SerilizeIndex(ProvenanceIndex pi) throws IOException {
+		Logger logger = Logger.getInstance();
 		FileOutputStream fileOut = new FileOutputStream(Config.getDatasetLocation()+indexPath);
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		logger.startWriteIndexToDisk();
 		out.writeObject(pi);
+		logger.endWriteIndexToDisk();
 		out.close();
 		fileOut.close();
 	}

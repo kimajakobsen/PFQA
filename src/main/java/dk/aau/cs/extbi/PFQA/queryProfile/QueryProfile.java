@@ -8,37 +8,23 @@ import java.util.regex.Pattern;
 
 import org.apache.jena.query.Query;
 
+import dk.aau.cs.extbi.PFQA.logger.Logger;
+
 public class QueryProfile {
 	private PredicatePath predicatePaths = new PredicatePath();
-	private Filter filters = new Filter();
 	private Map<String,String>  prefixes = new HashMap<String, String>();
 	
 	public QueryProfile(Query q) {
-		
-		
-//		Pattern prefixPattern = Pattern.compile("PREFIX.*:.*<(.*)>", Pattern.DOTALL);
-//		Matcher prefixMatcher = prefixPattern.matcher(q.toString());
-//		int index = 1;
-//		while (prefixMatcher.find()) {
-//			System.out.println("match "+prefixMatcher.group(1));
-//			System.out.println("match "+prefixMatcher.group(2));
-//			
-//			//addPrefix(prefixMatcher.group(1));
-//			//addPrefix(prefixMatcher.group(2));
-//			index++;
-//		}
+		Logger logger = Logger.getInstance();
 		prefixes.put("skos", "http://www.w3.org/2004/02/skos/core#");
 		prefixes.put("", "http://example.com/");
 		
+		logger.startBuildQueryProfile();
 		Pattern whereClausePattern = Pattern.compile("\\{(.*?)\\}", Pattern.DOTALL);
 		Matcher whereClauseMatcher = whereClausePattern.matcher(q.toString());
 		
 		if (whereClauseMatcher.find()) {
 		    String[] split = whereClauseMatcher.group(1).split("FILTER");
-		    String filterClause = null;
-		    if (split.length == 2) {
-		    	filterClause = split[1];
-			}
 		    String whereClause = split[0];
 		    String[] starPatterns = whereClause.split("\\.");
 		    
@@ -59,10 +45,10 @@ public class QueryProfile {
 			}
 		    for (TriplePatternContainer triplePattern : tripleContainers) {
 		    	predicatePaths.addTriplePatternContainer(triplePattern);
-		    	
 			}
-		    System.out.println(predicatePaths);
+		    //System.out.println(predicatePaths);
 		}
+		logger.endBuildQueryProfile();
 	} 
 	
 	private String createPrefix(String string) {
@@ -75,21 +61,7 @@ public class QueryProfile {
 		return string;
 	}
 
-	private void addPrefix(String group) {
-		String trim = group.trim().replaceAll(" +", " ");
-		
-		String[] split = trim.split(" ");
-		String url = split[2].substring(1, split[2].length()-1);
-		System.out.println(url);
-		prefixes.put(split[1], split[2]);
-		
-		
-	}
-
 	public PredicatePath getPredicatePaths() {
 		return predicatePaths;
 	}
-	
-
-	
 }

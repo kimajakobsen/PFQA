@@ -12,15 +12,20 @@ import org.apache.jena.tdb.TDBFactory;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
+import dk.aau.cs.extbi.PFQA.logger.Logger;
 
 public class FullMaterilization extends QueryOptimizationStrategy {
 	private String modelName = Config.getNamespace()+"fullMaterilized";
+	private Logger logger;
 
 	public FullMaterilization(ContextSet contextSetMinumum) {
 		super(contextSetMinumum);
+		logger = Logger.getInstance();
+		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
+		
+		logger.startPrepareOptimizationStrategy();
 		
 		String queryString = createQuery();
-		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		dataset.begin(ReadWrite.WRITE) ;
 			
 		Query query = QueryFactory.create(queryString) ;
@@ -33,6 +38,8 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 		
 		dataset.commit();
 		dataset.end();
+		
+		logger.endPrepareOptimizationStrategy();
 	}
 	
 	private String createQuery() {
@@ -57,9 +64,11 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 	public ResultSet execute(Query aq) {
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		dataset.begin(ReadWrite.READ) ;
+		logger.startExecuteQuery();
 		Model model = dataset.getNamedModel(modelName);
 		QueryExecution qexec = QueryExecutionFactory.create(aq, model) ;
 		ResultSet results = qexec.execSelect() ;
+		logger.endExecuteQuery();
 		
 		dataset.commit();
 		dataset.end();
