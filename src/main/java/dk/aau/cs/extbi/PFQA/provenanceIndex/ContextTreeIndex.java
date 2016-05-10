@@ -17,7 +17,7 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 	}
 	
 	@Override
-	public ContextSet getContext(QueryProfile qp) {
+	public ContextSet getContext(QueryProfile qp, ContextSet contextSetPQ) {
 		Logger logger = Logger.getInstance();
 		ContextSet contextSet = new ContextSet();
 		
@@ -28,7 +28,9 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 		}
 		logger.endIndexLookup();
 		
-		return contextSet;
+		ContextSet contextSetMinumum = contextSet.intersect(contextSetPQ);
+		
+		return contextSetMinumum;
 	}
 	
 	private ContextSet getTreeContextValue(ArrayList<TriplePatternContainer> predicatePath, int index, ContextTreeIndexNode<String> tree) {
