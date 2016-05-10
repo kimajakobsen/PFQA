@@ -7,5 +7,5 @@ public abstract class ProvenanceIndex implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public abstract ContextSet getContext(QueryProfile qp);
+	public abstract ContextSet getContext(QueryProfile qp, ContextSet contextSetPQ);
 }
