@@ -21,8 +21,7 @@ public class PredicatePath {
 		}
 	}
 
-	private void forkPathAndAddTriplePattern(
-			TriplePatternContainer triplePatternContainer) {
+	private void forkPathAndAddTriplePattern(TriplePatternContainer triplePatternContainer) {
 		int indexPath = 0;
 		int indexTPC;
 		ArrayList<Integer> pathMatches = new ArrayList<Integer>();
@@ -50,8 +49,7 @@ public class PredicatePath {
 	}
 
 	private void addNewPath(ArrayList<TriplePatternContainer> path) {
-		// TODO Auto-generated method stub
-		throw new NotImplemented();
+		paths.add(path);
 	}
 
 	private boolean triplePatternMatchNoneLastObjectInPaths(TriplePatternContainer triplePatternContainer) {
