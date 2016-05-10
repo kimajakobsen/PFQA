@@ -118,12 +118,11 @@ public class Logger {
 
 	public void endIntersectContextSet() {
 		Instant end = Instant.now();
-		indexLookupDuration = Duration.between(intersectContextSetStart, end).toMillis();
+		intersectContextSetDuration = Duration.between(intersectContextSetStart, end).toMillis();
 	}
 
 	public void startPrepareOptimizationStrategy() {
 		prepairOptimizationStrategyStart = Instant.now();
-		
 	}
 
 	public void endPrepareOptimizationStrategy() {
