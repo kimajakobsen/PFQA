@@ -1,14 +1,13 @@
-PREFIX rdfh: <http://lod2.eu/schemas/rdfh#>
+PREFIX : <http://example.com/>
 SELECT (SUM(?lo_extendedprice * ?lo_discount) AS ?sum_revenue)
 WHERE {
-	?li a rdfh:lineorder ;
-	   rdfh:lo_orderdate ?lo_orderdate ;
-	   rdfh:lo_extendedprice ?lo_extendedprice ;
-	   rdfh:lo_discount ?lo_discount ;
-	   rdfh:lo_quantity ?lo_quantity .
-	?lo_orderdate rdfh:d_year ?d_year .
-	?lo_orderdate rdfh:d_month ?d_month .
+	?li :orderdate ?lo_orderdate ;
+	   :extendedprice ?lo_extendedprice ;
+	   :discount ?lo_discount ;
+	   :quantity ?lo_quantity .
+	?lo_orderdate :year ?year .
+	?lo_orderdate :month ?month .
 
-	FILTER(?d_year = 1993 && ?d_month = 'January')
+	FILTER(?year = 1993 && ?month = 'January')
 	FILTER((?lo_discount >= 1) && (?lo_discount <= 3) && (?lo_quantity < 25)) 
 }

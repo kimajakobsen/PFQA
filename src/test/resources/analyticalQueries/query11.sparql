@@ -1,21 +1,20 @@
-PREFIX rdfh: <http://lod2.eu/schemas/rdfh#>
-SELECT ?d_year ?c_nation (SUM(?lo_revenue - ?lo_supplycost) AS ?sum_profit) 
+PREFIX : <http://example.com/>
+SELECT ?year ?c_nation (SUM(?lo_revenue - ?lo_supplycost) AS ?sum_profit) 
 WHERE {
-	?li a rdfh:lineorder ;
-	   rdfh:lo_orderdate ?lo_orderdate ;
-	   rdfh:lo_custkey ?lo_custkey ;
-	   rdfh:lo_suppkey ?lo_suppkey ;
-	   rdfh:lo_revenue ?lo_revenue ;
-	   rdfh:lo_partkey ?lo_partkey ;
-	   rdfh:lo_supplycost ?lo_supplycost .
+	?li :orderdate ?lo_orderdate ;
+	   :custkey ?lo_custkey ;
+	   :suppkey ?lo_suppkey ;
+	   :revenue ?lo_revenue ;
+	   :partkey ?lo_partkey ;
+	   :supplycost ?lo_supplycost .
 
-	?lo_custkey rdfh:c_region 'AMERICA' .
-	?lo_suppkey rdfh:s_region 'AMERICA' .
-	?lo_custkey rdfh:c_nation ?c_nation .
-	?lo_partkey rdfh:p_mfgr ?p_mfgr . 
-	?lo_orderdate rdfh:d_year ?d_year .
-	FILTER(?d_year = 1992)
+	?lo_custkey :region 'AMERICA' .
+	?lo_suppkey :region 'AMERICA' .
+	?lo_custkey :nation ?c_nation .
+	?lo_partkey :mfgr ?p_mfgr . 
+	?lo_orderdate :year ?year .
+	FILTER(?year = 1992)
 	FILTER((?p_mfgr = 'MFGR#1' || ?p_mfgr = 'MFGR#2')).
 }
-GROUP BY ?d_year ?c_nation 
-ORDER BY ?d_year ?c_nation
+GROUP BY ?year ?c_nation 
+ORDER BY ?year ?c_nation

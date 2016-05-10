@@ -1,16 +1,15 @@
-PREFIX rdfh: <http://lod2.eu/schemas/rdfh#>
-SELECT (SUM(?rdfh_lo_revenue) AS ?lo_revenue) ?d_year ?p_brand1 
+PREFIX : <http://example.com/>
+SELECT (SUM(?_lo_revenue) AS ?lo_revenue) ?year ?p_brand1 
 WHERE {
-	?li a rdfh:lineorder ;
-	   rdfh:lo_orderdate ?lo_orderdate ;
-	   rdfh:lo_partkey ?lo_partkey ;
-	   rdfh:lo_suppkey ?lo_suppkey ;
-	   rdfh:lo_revenue ?rdfh_lo_revenue .
+	?li :orderdate ?lo_orderdate ;
+	   :partkey ?lo_partkey ;
+	   :suppkey ?lo_suppkey ;
+	   :revenue ?_lo_revenue .
 
-	?lo_partkey rdfh:p_brand1 ?p_brand1 .
-	?lo_partkey rdfh:p_category 'MFGR#12' .
-	?lo_suppkey rdfh:s_region 'AMERICA' . 
-	?lo_orderdate rdfh:d_year ?d_year .
+	?lo_partkey :brand ?p_brand1 .
+	?lo_partkey :category 'MFGR#12' .
+	?lo_suppkey :region 'AMERICA' . 
+	?lo_orderdate :year ?year .
 }
-GROUP BY ?d_year ?p_brand1 
-ORDER BY ?d_year ?p_brand1
+GROUP BY ?year ?p_brand1 
+ORDER BY ?year ?p_brand1
