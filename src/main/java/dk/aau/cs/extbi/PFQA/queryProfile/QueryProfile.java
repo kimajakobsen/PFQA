@@ -33,7 +33,7 @@ public class QueryProfile {
 	    		String[] triples = triplesSimicolonSeperated.split(";");
 	    		for (String triple : triples) {
 	    			triple = triple.trim();
-	    			String[] elements = triple.split("[^a-zA-Z0-9\\?:]+");
+	    			String[] elements = triple.split("[^a-zA-Z0-9\\?:_]+");
 	    			if (elements.length == 3) {
 	    				tripleContainers.add(new TriplePatternContainer(createPrefix(elements[0]),createPrefix(elements[1]),createPrefix(elements[2])));
 					} else if (elements.length == 2) {
@@ -46,7 +46,7 @@ public class QueryProfile {
 		    for (TriplePatternContainer triplePattern : tripleContainers) {
 		    	predicatePaths.addTriplePatternContainer(triplePattern);
 			}
-		    //System.out.println(predicatePaths);
+		    System.out.println(predicatePaths);
 		}
 		logger.endBuildQueryProfile();
 	} 
