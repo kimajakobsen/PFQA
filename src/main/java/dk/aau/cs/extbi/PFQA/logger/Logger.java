@@ -35,6 +35,7 @@ public class Logger {
     private Instant executeAnalyticalQueryStart;
     private long executeAnalyticalQueryDuration;
 	private ResultSet resultSet;
+	private SimpleEntry<String, String> dataset;
 	
 	private Logger(){}
 	
@@ -164,6 +165,7 @@ public class Logger {
 		result.addIntersectContextSet(intersectContextSetDuration);
 		result.addPrepairOptimizationStrategy(prepairOptimizationStrategyDuration);
 		result.addExecuteAnalyticalQuery(executeAnalyticalQueryDuration);
+		result.addDataset(dataset);
 		
 		results.add(result);
 		clearTempoaryVariables();
@@ -192,5 +194,9 @@ public class Logger {
 		prepairOptimizationStrategyDuration = 0;
 		executeAnalyticalQueryStart = null;
 		executeAnalyticalQueryDuration = 0;
+	}
+
+	public void startDataset(SimpleEntry<String, String> dataset) {
+		this.dataset = dataset;
 	}
 }

@@ -20,6 +20,7 @@ public class AnalyticalQueryResult {
 	private long prepairOptimizationStrategyDuration;
 	private long executeAnalyticalQueryDuration;
 	private long readIndexDuration;
+	private SimpleEntry<String, String> dataset;
 	
 	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, ResultSet resultSet) {
 		this.analyticalQuery = analyticalQuery;
@@ -88,6 +89,10 @@ public class AnalyticalQueryResult {
     public long getProvenanceQueryExecutionDuration() {
         return provenanceQueryExecutionDuration;
     }
+    
+    public SimpleEntry<String, String> getDataset() {
+        return dataset;
+    }
 
 	public long getBuildIndexDuration() {
         return buildIndexDuration;
@@ -134,4 +139,8 @@ public class AnalyticalQueryResult {
     	
 		return total;
     }
+
+	public void addDataset(SimpleEntry<String, String> dataset) {
+		this.dataset = dataset;
+	}
 }

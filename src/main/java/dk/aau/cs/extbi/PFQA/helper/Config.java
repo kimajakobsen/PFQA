@@ -6,6 +6,7 @@ public class Config {
 	private static String namespace = "http://example.com/";
 	private static String provenanceNamespace = namespace+"provenance/";
 	private static String cubeName = namespace+"cube/";
+	private static String dataset = "../../provenanceGenerator/sf100l/";
 
 	public static String getNamespace() {
 		return namespace;
@@ -28,6 +29,10 @@ public class Config {
 	}
 
 	public static String getDatasetLocation() {
-		return "../../provenanceGenerator/tdb/test/";
+		return dataset;
+	}
+	
+	public static void setDatasetLocation(String dataset) {
+		Config.dataset = dataset;
 	}
 }

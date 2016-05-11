@@ -8,6 +8,7 @@ import org.apache.jena.query.QueryFactory;
 
 public class ExperimentBuilder {
 	private ArrayList<SimpleEntry<String,Query>> analyticalQueries = new ArrayList<SimpleEntry<String,Query>>();
+	private ArrayList<SimpleEntry<String,String>> datasets = new ArrayList<SimpleEntry<String,String>>();
 	private ArrayList<SimpleEntry<String,Query>> provenanceQueries = new ArrayList<SimpleEntry<String,Query>>();
 	private ArrayList<String> optimizationStrategies = new ArrayList<String>();
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
@@ -49,11 +50,15 @@ public class ExperimentBuilder {
 	}
 	
 	public Experiment build() {
-		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices);
+		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices, datasets);
 	}
 	
 	private String getFileName(String path) {
 		String[] split = path.split("/");
 		return split[split.length-1];
+	}
+
+	public void addDataset(String path) {
+		datasets.add(new SimpleEntry<String, String>(getFileName(path), path));
 	}
 }
