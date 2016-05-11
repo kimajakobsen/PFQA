@@ -49,6 +49,8 @@ public class ProvenanceIndexBuilder {
 		 	} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
+		} else if (getFileName(indexPath).equals("none")) {
+			return new none();
 		}
 		throw new IllegalArgumentException("The supplied index is not of known type ("+getFileName(indexPath)+")");
 	}
