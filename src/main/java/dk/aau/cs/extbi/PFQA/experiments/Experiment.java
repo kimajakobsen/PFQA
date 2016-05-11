@@ -19,17 +19,20 @@ public class Experiment {
 	private ArrayList<String> optimizationStrategies = new ArrayList<String>();
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
 	private ArrayList<SimpleEntry<String, String>> datasets;
+	private int numberOfExperimentRuns;
 	
 	public Experiment(ArrayList<SimpleEntry<String, Query>> analyticalQueries2,
 			ArrayList<SimpleEntry<String, Query>> provenanceQueries2,
 			ArrayList<String> optimizationStrategies,
 			ArrayList<String> provenanceIndices, 
-			ArrayList<SimpleEntry<String, String>> datasets) {
+			ArrayList<SimpleEntry<String, String>> datasets, 
+			int numberOfExperimentRuns) {
 		this.analyticalQueries = analyticalQueries2;
 		this.provenanceQueries = provenanceQueries2;
 		this.optimizationStrategies = optimizationStrategies;
 		this.provenanceIndices = provenanceIndices;
 		this.datasets = datasets;
+		this.numberOfExperimentRuns = numberOfExperimentRuns;
 	}
 
 	public void run() {
@@ -54,11 +57,15 @@ public class Experiment {
 							logger.startProvenanceIndexContext(index);
 							
 							if (isStrategyIndexCombinationLegal(strategyString,index)) {
-								QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
-								QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
-								ResultSet result =  strategy.execute(analyticalQuery.getValue());
-								logger.setResult(result);
-								logger.commitResult();
+								
+								for (int i = 0; i < numberOfExperimentRuns; i++) {
+									logger.startExperimentRun(i+1);
+									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
+									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
+									ResultSet result =  strategy.execute(analyticalQuery.getValue());
+									logger.setResult(result);
+									logger.commitResult();
+								}
 							}
 						}
 					}

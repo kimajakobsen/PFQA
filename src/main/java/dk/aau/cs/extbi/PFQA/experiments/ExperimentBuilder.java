@@ -12,6 +12,7 @@ public class ExperimentBuilder {
 	private ArrayList<SimpleEntry<String,Query>> provenanceQueries = new ArrayList<SimpleEntry<String,Query>>();
 	private ArrayList<String> optimizationStrategies = new ArrayList<String>();
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
+	private int numberOfExperimentRuns;
 
 	public void addAnalyticalQueries(ArrayList<String> aq) {
 		for (String string : aq) {
@@ -50,7 +51,7 @@ public class ExperimentBuilder {
 	}
 	
 	public Experiment build() {
-		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices, datasets);
+		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices, datasets, numberOfExperimentRuns);
 	}
 	
 	private String getFileName(String path) {
@@ -60,5 +61,9 @@ public class ExperimentBuilder {
 
 	public void addDataset(String path) {
 		datasets.add(new SimpleEntry<String, String>(getFileName(path), path));
+	}
+
+	public void setNumberOfExperimentRuns(int numberOfExperimentRuns) {
+		this.numberOfExperimentRuns = numberOfExperimentRuns;
 	}
 }

@@ -25,7 +25,9 @@ public class App
 		experimentBuilder.addProvenanceIndex("none");
 		experimentBuilder.addProvenanceQueries("src/test/resources/provenanceQueries/allContexts.sparql");
 		experimentBuilder.addOptimizationStrategy("FullMaterilization");
-		experimentBuilder.addDataset("fgdfg");
+		experimentBuilder.addDataset("../../provenanceGenerator/sf50l/");
+		experimentBuilder.addDataset("../../provenanceGenerator/sf100l/");
+		experimentBuilder.setNumberOfExperimentRuns(3);
 		
 		Experiment experiments = experimentBuilder.build();
 		experiments.run();

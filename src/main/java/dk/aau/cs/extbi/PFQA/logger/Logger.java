@@ -36,6 +36,7 @@ public class Logger {
     private long executeAnalyticalQueryDuration;
 	private ResultSet resultSet;
 	private SimpleEntry<String, String> dataset;
+	private int experimentRun;
 	
 	private Logger(){}
 	
@@ -166,6 +167,7 @@ public class Logger {
 		result.addPrepairOptimizationStrategy(prepairOptimizationStrategyDuration);
 		result.addExecuteAnalyticalQuery(executeAnalyticalQueryDuration);
 		result.addDataset(dataset);
+		result.setExperimentRunNumber(experimentRun);
 		
 		results.add(result);
 		clearTempoaryVariables();
@@ -198,5 +200,9 @@ public class Logger {
 
 	public void startDataset(SimpleEntry<String, String> dataset) {
 		this.dataset = dataset;
+	}
+
+	public void startExperimentRun(int experimentRun) {
+		this.experimentRun = experimentRun;
 	}
 }

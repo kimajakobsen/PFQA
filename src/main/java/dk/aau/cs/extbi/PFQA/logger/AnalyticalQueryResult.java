@@ -21,6 +21,7 @@ public class AnalyticalQueryResult {
 	private long executeAnalyticalQueryDuration;
 	private long readIndexDuration;
 	private SimpleEntry<String, String> dataset;
+	private int experimentRun;
 	
 	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, ResultSet resultSet) {
 		this.analyticalQuery = analyticalQuery;
@@ -80,6 +81,10 @@ public class AnalyticalQueryResult {
 
 	public String getIndex() {
 		return index;
+	}
+	
+	public int getExperimentRunNumber() {
+		return experimentRun;
 	}
 
 	public ResultSet getResult() {
@@ -142,5 +147,9 @@ public class AnalyticalQueryResult {
 
 	public void addDataset(SimpleEntry<String, String> dataset) {
 		this.dataset = dataset;
+	}
+
+	public void setExperimentRunNumber(int experimentRun) {
+		this.experimentRun = experimentRun;
 	}
 }
