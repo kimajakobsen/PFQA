@@ -20,6 +20,7 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 
 	public FullMaterilization(ContextSet contextSetMinumum) {
 		super(contextSetMinumum);
+		
 		logger = Logger.getInstance();
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		

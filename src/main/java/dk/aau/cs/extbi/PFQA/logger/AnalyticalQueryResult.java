@@ -1,11 +1,13 @@
 package dk.aau.cs.extbi.PFQA.logger;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import org.apache.jena.query.Query;
 import org.apache.jena.query.ResultSet;
 
 public class AnalyticalQueryResult {
-	private Query analyticalQuery;
-	private Query provenanceQuery;
+	private SimpleEntry<String,Query> analyticalQuery;
+	private SimpleEntry<String,Query> provenanceQuery;
 	private String strategy;
 	private String index;
 	private ResultSet result;
@@ -19,7 +21,7 @@ public class AnalyticalQueryResult {
 	private long executeAnalyticalQueryDuration;
 	private long readIndexDuration;
 	
-	public AnalyticalQueryResult(Query analyticalQuery, Query provenanceQuery, String strategy, String index, ResultSet resultSet) {
+	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, ResultSet resultSet) {
 		this.analyticalQuery = analyticalQuery;
 		this.provenanceQuery = provenanceQuery;
 		this.strategy = strategy;
@@ -63,11 +65,11 @@ public class AnalyticalQueryResult {
         this.executeAnalyticalQueryDuration = (executeAnalyticalQueryDuration);
     }
 
-	public Query getAnalyticalQuery() {
+	public SimpleEntry<String, Query> getAnalyticalQuery() {
 		return analyticalQuery;
 	}
 
-	public Query getProvenanceQuery() {
+	public SimpleEntry<String, Query> getProvenanceQuery() {
 		return provenanceQuery;
 	}
 
@@ -117,5 +119,19 @@ public class AnalyticalQueryResult {
     
     public long getReadIndexDuration() {
     	return (readIndexDuration);
+    }
+    
+    public long getTotalDuration() {
+    	long total = provenanceQueryExecutionDuration + 
+    			buildIndexDuration + 
+    			writeIndexToDiskDuration + 
+    			buildQueryProfileDuration + 
+    			indexLookupDuration + 
+    			intersectContextSetDuration + 
+    			prepairOptimizationStrategyDuration + 
+    			executeAnalyticalQueryDuration + 
+    			readIndexDuration;
+    	
+		return total;
     }
 }

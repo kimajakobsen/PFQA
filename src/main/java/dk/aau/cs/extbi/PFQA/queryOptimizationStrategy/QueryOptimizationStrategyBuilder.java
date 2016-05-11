@@ -1,5 +1,7 @@
 package dk.aau.cs.extbi.PFQA.queryOptimizationStrategy;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import org.apache.jena.query.Query;
 
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
@@ -9,12 +11,12 @@ import dk.aau.cs.extbi.PFQA.queryProfile.QueryProfile;
 
 public class QueryOptimizationStrategyBuilder {
 	private String type;
-	private Query analyticalQuery;
+	private SimpleEntry<String, Query> analyticalQuery;
 	private String provenanceIndex;
 	
-	public QueryOptimizationStrategyBuilder(String type, Query analyticalQuery, String provenanceIndex) {
+	public QueryOptimizationStrategyBuilder(String type, SimpleEntry<String, Query> analyticalQuery2, String provenanceIndex) {
 		this.type = type;
-		this.analyticalQuery = analyticalQuery;
+		this.analyticalQuery = analyticalQuery2;
 		this.provenanceIndex = provenanceIndex;
 	}
 	
@@ -23,10 +25,9 @@ public class QueryOptimizationStrategyBuilder {
 			ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(provenanceIndex);
 			ProvenanceIndex pi = provenanceIndexBuilder.build(); 
 			
-			QueryProfile queryProfile = new QueryProfile(analyticalQuery);
+			QueryProfile queryProfile = new QueryProfile(analyticalQuery.getValue());
 			
-			ContextSet contextSetAP = pi.getContext(queryProfile);
-			ContextSet contextSetMinumum = contextSetAP.intersect(contextSetPQ);
+			ContextSet contextSetMinumum = pi.getContext(queryProfile,contextSetPQ);
 			
 			return new FullMaterilization(contextSetMinumum);
 		} else {

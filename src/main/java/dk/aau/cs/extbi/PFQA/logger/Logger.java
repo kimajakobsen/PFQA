@@ -2,6 +2,7 @@ package dk.aau.cs.extbi.PFQA.logger;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.ResultSet;
@@ -11,8 +12,8 @@ public class Logger {
 	private static Logger logger = new Logger();
 	private ExperimentResults results = new ExperimentResults();
 	private AnalyticalQueryResult result;
-	private Query analyticalQuery;
-	private Query provenanceQuery;
+	private SimpleEntry<String, Query> analyticalQuery;
+	private SimpleEntry<String, Query> provenanceQuery;
 	private String strategy;
 	private String index;
     private Instant provenanceQueryExecutionStart;
@@ -41,12 +42,12 @@ public class Logger {
 		return logger;
 	}
 
-	public void startAnalyticalQueryContex(Query analyticalQuery) {
-		this.analyticalQuery = analyticalQuery;
+	public void startAnalyticalQueryContex(SimpleEntry<String, Query> analyticalQuery2) {
+		this.analyticalQuery = analyticalQuery2;
 	}
 	
-	public void startProvenanceQueryContext(Query provenanceQuery) {
-		this.provenanceQuery = provenanceQuery;
+	public void startProvenanceQueryContext(SimpleEntry<String, Query> provenanceQuery2) {
+		this.provenanceQuery = provenanceQuery2;
 	}
 
 	public void startOptimizationStrategyContext(String strategyString) {
@@ -68,11 +69,13 @@ public class Logger {
 	public void endProvenanceQueryExecution() {
 		Instant end = Instant.now();
 		provenanceQueryExecutionDuration = Duration.between(provenanceQueryExecutionStart, end).toMillis();
+		provenanceQueryExecutionStart = null;
 	}
 	
 	public void endReadIndex() {
 		Instant end = Instant.now();
 		readIndexDuration = Duration.between(readIndexStart, end).toMillis();
+		readIndexStart = null;
 	}
 
 	public void startBuildIndex() {
@@ -82,6 +85,7 @@ public class Logger {
 	public void endBuildIndex() {
 		Instant end = Instant.now();
 		buildIndexDuration = Duration.between(buildIndexStart, end).toMillis();
+		buildIndexStart = null;
 	}
 
 	public void startWriteIndexToDisk() {
@@ -92,6 +96,7 @@ public class Logger {
 	public void endWriteIndexToDisk() {
 		Instant end = Instant.now();
 		writeIndexToDiskDuration = Duration.between(writeIndexToDiskStart, end).toMillis();
+		writeIndexToDiskStart = null;
 	}
 
 	public void startBuildQueryProfile() {
@@ -101,6 +106,7 @@ public class Logger {
 	public void endBuildQueryProfile() {
 		Instant end = Instant.now();
 		buildQueryProfileDuration = Duration.between(buildQueryProfileStart, end).toMillis();
+		buildQueryProfileStart = null;
 	}
 
 	public void startIndexLookup() {
@@ -110,6 +116,7 @@ public class Logger {
 	public void endIndexLookup() {
 		Instant end = Instant.now();
 		indexLookupDuration = Duration.between(indexLookupStart, end).toMillis();
+		indexLookupStart = null ;
 	}
 
 	public void startIntersectContextSet() {
@@ -119,6 +126,7 @@ public class Logger {
 	public void endIntersectContextSet() {
 		Instant end = Instant.now();
 		intersectContextSetDuration = Duration.between(intersectContextSetStart, end).toMillis();
+		intersectContextSetStart = null;
 	}
 
 	public void startPrepareOptimizationStrategy() {
@@ -128,6 +136,7 @@ public class Logger {
 	public void endPrepareOptimizationStrategy() {
 		Instant end = Instant.now();
 		prepairOptimizationStrategyDuration = Duration.between(prepairOptimizationStrategyStart, end).toMillis();
+		prepairOptimizationStrategyStart= null;
 	}
 
 	public void startExecuteQuery() {
@@ -137,6 +146,7 @@ public class Logger {
 	public void endExecuteQuery() {
 		Instant end = Instant.now();
 		executeAnalyticalQueryDuration = Duration.between(executeAnalyticalQueryStart, end).toMillis();
+		executeAnalyticalQueryStart = null;
 	}
 
 	public void setResult(ResultSet result) {
@@ -156,10 +166,31 @@ public class Logger {
 		result.addExecuteAnalyticalQuery(executeAnalyticalQueryDuration);
 		
 		results.add(result);
+		clearTempoaryVariables();
 	}
 	
 	public void printToSystemOut() {
 		results.printToSystemOut();
 	}
 	
+	private void clearTempoaryVariables() {
+		provenanceQueryExecutionStart = null;
+		provenanceQueryExecutionDuration = 0;
+		readIndexStart = null;
+		readIndexDuration = 0;
+		buildIndexStart = null;
+		buildIndexDuration = 0;
+		writeIndexToDiskStart = null;
+		writeIndexToDiskDuration = 0;
+		buildQueryProfileStart = null;
+		buildQueryProfileDuration = 0;
+		indexLookupStart = null;
+		indexLookupDuration = 0;
+		intersectContextSetStart = null;
+		intersectContextSetDuration = 0;
+		prepairOptimizationStrategyStart = null;
+		prepairOptimizationStrategyDuration = 0;
+		executeAnalyticalQueryStart = null;
+		executeAnalyticalQueryDuration = 0;
+	}
 }
