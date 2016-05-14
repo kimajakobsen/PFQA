@@ -205,4 +205,8 @@ public class Logger {
 	public void startExperimentRun(int experimentRun) {
 		this.experimentRun = experimentRun;
 	}
+
+	public void printToFile() {
+		results.printToFile();
+	}
 }
