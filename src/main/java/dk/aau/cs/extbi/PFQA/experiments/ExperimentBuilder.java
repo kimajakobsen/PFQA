@@ -53,7 +53,8 @@ public class ExperimentBuilder {
 	public Experiment build() {
 		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices, datasets, numberOfExperimentRuns);
 	}
-	
+
+
 	private String getFileName(String path) {
 		String[] split = path.split("/");
 		return split[split.length-1];
