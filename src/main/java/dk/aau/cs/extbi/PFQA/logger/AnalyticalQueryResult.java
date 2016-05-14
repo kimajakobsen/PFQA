@@ -152,4 +152,9 @@ public class AnalyticalQueryResult {
 	public void setExperimentRunNumber(int experimentRun) {
 		this.experimentRun = experimentRun;
 	}
+	
+	public String getStrategyName() {
+		return strategy+index;
+		
+	}
 }

@@ -57,9 +57,11 @@ public class Experiment {
 							logger.startProvenanceIndexContext(index);
 							
 							if (isStrategyIndexCombinationLegal(strategyString,index)) {
+								Config.addStrategy(strategyString+index);
 								
 								for (int i = 0; i < numberOfExperimentRuns; i++) {
 									logger.startExperimentRun(i+1);
+									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
 									ResultSet result =  strategy.execute(analyticalQuery.getValue());
@@ -73,6 +75,7 @@ public class Experiment {
 			}
 		}
 		logger.printToSystemOut();
+		logger.printToFile();
 	}
 
 	public boolean isStrategyIndexCombinationLegal(String strategyString, String index) {

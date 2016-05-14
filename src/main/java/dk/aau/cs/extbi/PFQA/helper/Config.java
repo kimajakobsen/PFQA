@@ -1,5 +1,7 @@
 package dk.aau.cs.extbi.PFQA.helper;
 
+import java.util.ArrayList;
+
 public class Config {
 
 
@@ -7,6 +9,7 @@ public class Config {
 	private static String provenanceNamespace = namespace+"provenance/";
 	private static String cubeName = namespace+"cube/";
 	private static String dataset = "../../provenanceGenerator/sf100l/";
+	private static ArrayList<String> strategies = new ArrayList<String>();
 
 	public static String getNamespace() {
 		return namespace;
@@ -34,5 +37,13 @@ public class Config {
 	
 	public static void setDatasetLocation(String dataset) {
 		Config.dataset = dataset;
+	}
+
+	public static ArrayList<String> getStrategies() {
+		return strategies;
+	}
+	
+	public static void addStrategy(String strategy) {
+		Config.strategies.add(strategy);
 	}
 }
