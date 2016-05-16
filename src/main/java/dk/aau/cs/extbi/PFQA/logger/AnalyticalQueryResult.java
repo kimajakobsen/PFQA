@@ -1,17 +1,20 @@
 package dk.aau.cs.extbi.PFQA.logger;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.ResultSet;
 
-public class AnalyticalQueryResult {
+public class AnalyticalQueryResult{
 	private SimpleEntry<String,Query> analyticalQuery;
 	private SimpleEntry<String,Query> provenanceQuery;
 	private String strategy;
 	private String index;
 	private ResultSet result;
 	private long provenanceQueryExecutionDuration;
+	private long readIndexDuration;
 	private long buildIndexDuration;
 	private long writeIndexToDiskDuration;
 	private long buildQueryProfileDuration;
@@ -19,16 +22,18 @@ public class AnalyticalQueryResult {
 	private long intersectContextSetDuration;
 	private long prepairOptimizationStrategyDuration;
 	private long executeAnalyticalQueryDuration;
-	private long readIndexDuration;
+
 	private SimpleEntry<String, String> dataset;
 	private int experimentRun;
+	private LocalDateTime timePoint;
 	
-	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, ResultSet resultSet) {
+	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, ResultSet resultSet, LocalDateTime time) {
 		this.analyticalQuery = analyticalQuery;
 		this.provenanceQuery = provenanceQuery;
 		this.strategy = strategy;
 		this.index = index;
 		this.result = resultSet;
+		setTimePoint(time);
 	}
 	
 	public void addProvenanceQueryExecution(long provenanceQueryExecutionDuration) {
@@ -131,6 +136,7 @@ public class AnalyticalQueryResult {
     	return (readIndexDuration);
     }
     
+    
     public long getTotalDuration() {
     	long total = provenanceQueryExecutionDuration + 
     			buildIndexDuration + 
@@ -156,5 +162,18 @@ public class AnalyticalQueryResult {
 	public String getStrategyName() {
 		return strategy+index;
 		
+	}
+
+	public LocalDateTime getTimePoint() {
+		return timePoint;
+	}
+	
+	public long getUnixTimestamp() {
+		ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
+		return timePoint.atZone(zoneId).toEpochSecond();
+	}
+
+	public void setTimePoint(LocalDateTime timePoint) {
+		this.timePoint = timePoint;
 	}
 }
