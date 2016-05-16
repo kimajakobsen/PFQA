@@ -19,7 +19,7 @@
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
 			<type>pom</type>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 		
 		<dependency>
@@ -28,12 +28,6 @@
 			<version>2.6.2</version>
 		</dependency>
 				
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-entitymanager</artifactId>
-		    <version>5.1.0.Final</version>
-		</dependency>
-
 		<dependency>
 		    <groupId>postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
@@ -44,7 +38,7 @@
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-csv</artifactId>
 			<type>jar</type>
-			<version>3.0.0</version>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>
