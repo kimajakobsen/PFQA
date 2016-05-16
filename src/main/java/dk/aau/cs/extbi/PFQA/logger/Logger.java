@@ -2,6 +2,7 @@ package dk.aau.cs.extbi.PFQA.logger;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
@@ -37,8 +38,12 @@ public class Logger {
 	private ResultSet resultSet;
 	private SimpleEntry<String, String> dataset;
 	private int experimentRun;
+	private LocalDateTime time; 
 	
-	private Logger(){}
+	private Logger(){
+		time = LocalDateTime.now();
+		
+	}
 	
 	public static Logger getInstance() {
 		return logger;
@@ -156,7 +161,7 @@ public class Logger {
 	}
 
 	public void commitResult() {
-		result = new AnalyticalQueryResult(analyticalQuery, provenanceQuery,strategy,index, resultSet);
+		result = new AnalyticalQueryResult(analyticalQuery, provenanceQuery,strategy,index, resultSet, time);
 		result.addProvenanceQueryExecution(provenanceQueryExecutionDuration);
 		result.addBuildIndex(buildIndexDuration);
 		result.addReadIndex(readIndexDuration);
