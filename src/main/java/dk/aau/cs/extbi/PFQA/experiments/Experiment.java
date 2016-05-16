@@ -57,7 +57,7 @@ public class Experiment {
 							logger.startProvenanceIndexContext(index);
 							
 							if (isStrategyIndexCombinationLegal(strategyString,index)) {
-								Config.addStrategy(strategyString+index);
+								Config.setStrategyName(strategyString+index);
 								
 								for (int i = 0; i < numberOfExperimentRuns; i++) {
 									logger.startExperimentRun(i+1);

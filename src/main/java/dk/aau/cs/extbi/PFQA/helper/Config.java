@@ -43,7 +43,7 @@ public class Config {
 		return strategies;
 	}
 	
-	public static void addStrategy(String strategy) {
+	public static void setStrategyName(String strategy) {
 		Config.strategies.add(strategy);
 	}
 }
