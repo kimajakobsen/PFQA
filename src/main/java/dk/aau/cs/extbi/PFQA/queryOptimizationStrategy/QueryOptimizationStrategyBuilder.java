@@ -30,6 +30,15 @@ public class QueryOptimizationStrategyBuilder {
 			ContextSet contextSetMinumum = pi.getContext(queryProfile,contextSetPQ);
 			
 			return new FullMaterilization(contextSetMinumum);
+		} else if (type.equals("QueryRewriting")) {
+			ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(provenanceIndex);
+			ProvenanceIndex pi = provenanceIndexBuilder.build(); 
+			
+			QueryProfile queryProfile = new QueryProfile(analyticalQuery.getValue());
+			
+			ContextSet contextSetMinumum = pi.getContext(queryProfile,contextSetPQ);
+			
+			return new QueryRewriting(contextSetMinumum);
 		} else {
 			throw new IllegalArgumentException("The strategy "+type+" is not known.");
 		}
