@@ -23,23 +23,22 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 		
 		logger = Logger.getInstance();
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
-		
+		dataset.begin(ReadWrite.WRITE) ;
 		logger.startPrepareOptimizationStrategy();
 		
-		String queryString = createQuery();
-		dataset.begin(ReadWrite.WRITE) ;
+		if (!dataset.containsNamedModel(modelName)) {
+			String queryString = createQuery();
 			
-		Query query = QueryFactory.create(queryString) ;
-		QueryExecution qexec = QueryExecutionFactory.create(query, dataset) ;
-		Model resultModel = qexec.execConstruct() ;
-		qexec.close() ;
+			Query query = QueryFactory.create(queryString) ;
+			QueryExecution qexec = QueryExecutionFactory.create(query, dataset) ;
+			Model resultModel = qexec.execConstruct() ;
+			qexec.close() ;
 			
-		dataset.addNamedModel(modelName, resultModel);
-		//System.out.println("writing " + resultModel.size() + " triples to "+ Config.getNamespace()+"fullMaterilized");
+			dataset.addNamedModel(modelName, resultModel);
+		}
 		
 		dataset.commit();
 		dataset.end();
-		
 		logger.endPrepareOptimizationStrategy();
 	}
 	
