@@ -2,6 +2,7 @@ package dk.aau.cs.extbi.PFQA.experiments;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryFactory;
@@ -14,7 +15,7 @@ public class ExperimentBuilder {
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
 	private int numberOfExperimentRuns;
 
-	public void addAnalyticalQueries(ArrayList<String> aq) {
+	public void addAnalyticalQueries(List<String> aq) {
 		for (String string : aq) {
 			addAnalyticalQuery(string);
 		}
@@ -24,18 +25,18 @@ public class ExperimentBuilder {
 		analyticalQueries.add(new SimpleEntry<String,Query>(getFileName(aq),QueryFactory.read(aq)));
 	}
 	
-	public void addProvenanceQueries(ArrayList<String> pq) {
+	public void addProvenanceQueries(List<String> pq) {
 		for (String string : pq) {
-			addProvenanceQueries(string);
+			addProvenanceQuery(string);
 		}
 	}
 	
-	public void addProvenanceQueries(String pq) {
+	public void addProvenanceQuery(String pq) {
 		provenanceQueries.add(new SimpleEntry<String,Query>(getFileName(pq),QueryFactory.read(pq)));
 	}
 	
-	public void addOptimizationStrategies(ArrayList<String> strategies) {
-		optimizationStrategies.addAll(strategies);
+	public void addOptimizationStrategies(List<String> list) {
+		optimizationStrategies.addAll(list);
 	}
 	
 	public void addOptimizationStrategy(String strategy) {
@@ -65,5 +66,17 @@ public class ExperimentBuilder {
 
 	public void setNumberOfExperimentRuns(int numberOfExperimentRuns) {
 		this.numberOfExperimentRuns = numberOfExperimentRuns;
+	}
+
+	public void addProvenanceIndexes(List<String> indexes) {
+		for (String index : indexes) {
+			addProvenanceIndex(index);
+		}
+	}
+
+	public void addDatasets(List<String> datasets) {
+		for (String dataset : datasets) {
+			addDataset(dataset);
+		}
 	}
 }
