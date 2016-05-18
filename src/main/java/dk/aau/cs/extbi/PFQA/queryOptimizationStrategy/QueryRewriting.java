@@ -31,6 +31,7 @@ public class QueryRewriting extends QueryOptimizationStrategy {
 		query.addGraphURI(Config.getCubeStructureGraphName());
 		logger.endPrepareOptimizationStrategy();
 		return query;
+		
 	}
 	
 	@Override
@@ -47,6 +48,4 @@ public class QueryRewriting extends QueryOptimizationStrategy {
 		dataset.end();
 		return results;
 	}
-	
-
 }
