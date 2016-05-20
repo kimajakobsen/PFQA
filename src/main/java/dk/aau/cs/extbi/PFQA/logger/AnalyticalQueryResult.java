@@ -5,14 +5,13 @@ import java.time.ZoneId;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
-import org.apache.jena.query.ResultSet;
 
 public class AnalyticalQueryResult{
 	private SimpleEntry<String,Query> analyticalQuery;
 	private SimpleEntry<String,Query> provenanceQuery;
 	private String strategy;
 	private String index;
-	private ResultSet result;
+	private String result;
 	private long provenanceQueryExecutionDuration;
 	private long readIndexDuration;
 	private long buildIndexDuration;
@@ -27,7 +26,7 @@ public class AnalyticalQueryResult{
 	private int experimentRun;
 	private LocalDateTime timePoint;
 	
-	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, ResultSet resultSet, LocalDateTime time) {
+	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, String resultSet, LocalDateTime time) {
 		this.analyticalQuery = analyticalQuery;
 		this.provenanceQuery = provenanceQuery;
 		this.strategy = strategy;
@@ -92,7 +91,7 @@ public class AnalyticalQueryResult{
 		return experimentRun;
 	}
 
-	public ResultSet getResult() {
+	public String getResult() {
 		return result;
 	}
 
