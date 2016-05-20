@@ -4,8 +4,10 @@ import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.tdb.TDBFactory;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
@@ -21,21 +23,22 @@ public class QueryRewriting extends QueryOptimizationStrategy {
 	}
 	
 	private Query createQuery(Query query) {
+		Query newQuery = QueryFactory.create(query);
 		logger = Logger.getInstance();
 		
 		logger.startPrepareOptimizationStrategy();
 		for (String URI : contextSet.getValues()) {
-			query.addGraphURI(URI);
+			newQuery.addGraphURI(URI);
 		}
-		query.addGraphURI(Config.getCubeInstanceGraphName());
-		query.addGraphURI(Config.getCubeStructureGraphName());
+		newQuery.addGraphURI(Config.getCubeInstanceGraphName());
+		newQuery.addGraphURI(Config.getCubeStructureGraphName());
 		logger.endPrepareOptimizationStrategy();
-		return query;
+		return newQuery;
 		
 	}
 	
 	@Override
-	public ResultSet execute(Query originalQuery) {
+	public String execute(Query originalQuery) {
 		Query modifiedQuery = createQuery(originalQuery);
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		dataset.begin(ReadWrite.READ) ;
@@ -46,6 +49,6 @@ public class QueryRewriting extends QueryOptimizationStrategy {
 		
 		dataset.commit();
 		dataset.end();
-		return results;
+		return ResultSetFormatter.asText(results);
 	}
 }
