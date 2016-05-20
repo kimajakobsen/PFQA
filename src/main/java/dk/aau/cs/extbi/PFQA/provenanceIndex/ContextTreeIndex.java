@@ -1,6 +1,9 @@
 package dk.aau.cs.extbi.PFQA.provenanceIndex;
 
 import java.util.ArrayList;
+import java.util.AbstractMap.SimpleEntry;
+
+import org.apache.jena.query.Query;
 
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
@@ -17,12 +20,14 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 	}
 	
 	@Override
-	public ContextSet getContext(QueryProfile qp, ContextSet contextSetPQ) {
+	public ContextSet getContext(SimpleEntry<String, Query> analyticalQuery, ContextSet contextSetPQ) {
 		Logger logger = Logger.getInstance();
 		ContextSet contextSet = new ContextSet();
 		
+		QueryProfile queryProfile = new QueryProfile(analyticalQuery.getValue());
+		
 		logger.startIndexLookup();
-		ArrayList<ArrayList<TriplePatternContainer>> pathStructure = qp.getPredicatePaths().getPaths();
+		ArrayList<ArrayList<TriplePatternContainer>> pathStructure = queryProfile.getPredicatePaths().getPaths();
 		for (ArrayList<TriplePatternContainer> predicatePath : pathStructure) {
 			contextSet.add(getTreeContextValue(predicatePath, 0, root));
 		}

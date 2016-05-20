@@ -7,7 +7,6 @@ import org.apache.jena.query.Query;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndex;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndexBuilder;
-import dk.aau.cs.extbi.PFQA.queryProfile.QueryProfile;
 
 public class QueryOptimizationStrategyBuilder {
 	private String type;
@@ -25,18 +24,14 @@ public class QueryOptimizationStrategyBuilder {
 			ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(provenanceIndex);
 			ProvenanceIndex pi = provenanceIndexBuilder.build(); 
 			
-			QueryProfile queryProfile = new QueryProfile(analyticalQuery.getValue());
-			
-			ContextSet contextSetMinumum = pi.getContext(queryProfile,contextSetPQ);
+			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
 			
 			return new FullMaterilization(contextSetMinumum);
 		} else if (type.equals("QueryRewriting")) {
 			ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(provenanceIndex);
 			ProvenanceIndex pi = provenanceIndexBuilder.build(); 
 			
-			QueryProfile queryProfile = new QueryProfile(analyticalQuery.getValue());
-			
-			ContextSet contextSetMinumum = pi.getContext(queryProfile,contextSetPQ);
+			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
 			
 			return new QueryRewriting(contextSetMinumum);
 		} else {

@@ -1,15 +1,17 @@
 package dk.aau.cs.extbi.PFQA.provenanceIndex;
 
+import java.util.AbstractMap.SimpleEntry;
+
+import org.apache.jena.query.Query;
+
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
-import dk.aau.cs.extbi.PFQA.queryProfile.QueryProfile;
 
 public class none extends ProvenanceIndex {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public ContextSet getContext(QueryProfile qp, ContextSet contextSetPQ) {
+	public ContextSet getContext(SimpleEntry<String, Query> aq, ContextSet contextSetPQ) {
 		return contextSetPQ;
 	}
-
 }
