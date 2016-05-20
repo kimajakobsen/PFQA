@@ -1,5 +1,17 @@
 package dk.aau.cs.extbi.PFQA;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 import dk.aau.cs.extbi.PFQA.experiments.Experiment;
 import dk.aau.cs.extbi.PFQA.experiments.ExperimentBuilder;
 
@@ -7,29 +19,95 @@ public class App
 {
 	public static void main( String[] args )
     {
+		// create the command line parser
+		CommandLineParser parser = new DefaultParser();
+	
+		// create the Options
+		Options options = new Options();
+		options.addOption("h", "help", false, "Display this message." );
+		options.addOption("a", "aq", true, "use analytical queries");
+		options.addOption("s", "strategies", true, "use strategies");
+		options.addOption("i", "index", true, "use indexes");
+		options.addOption("p", "pq", true, "use analytical queries");
+		options.addOption("d", "dataset", true, "add dataset");
+		options.addOption("c", "config", true, "use a config file");
+		options.addOption("r", "runs", true, "number of runs");
+	
 		ExperimentBuilder experimentBuilder = new ExperimentBuilder();
-		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query1.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query2.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query3.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query4.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query5.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query6.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query7.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query8.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query9.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query10.sparql");
-//		//experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query11.sparql");
-//		experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query12.sparql");
-//		//experimentBuilder.addAnalyticalQuery("src/test/resources/analyticalQueries/query13.sparql");
-		experimentBuilder.addProvenanceIndex("contextTreeIndex");
-		experimentBuilder.addProvenanceIndex("none");
-		experimentBuilder.addProvenanceQueries("src/test/resources/provenanceQueries/allContexts.sparql");
-		experimentBuilder.addOptimizationStrategy("FullMaterilization");
-		experimentBuilder.addDataset("../../provenanceGenerator/sf50l/");
-		experimentBuilder.addDataset("../../provenanceGenerator/sf100l/");
-		experimentBuilder.setNumberOfExperimentRuns(3);
 		
+		try {
+		    CommandLine line = parser.parse( options, args );
+		    
+		    if (line.hasOption( "help" )) {
+		    	printHelp(null,options);
+		    	System.exit(0);
+			} 
+		    System.out.println(line.getArgList());
+		    if (line.hasOption("aq")) {
+		    	experimentBuilder.addAnalyticalQueries(Arrays.asList(line.getOptionValue("aq").split(",")));
+			}
+		    if (line.hasOption( "pq" )) {
+		    	experimentBuilder.addProvenanceQueries(Arrays.asList(line.getOptionValue("pq").split(",")));
+		    }
+		    if (line.hasOption( "dataset" )) {
+		    	experimentBuilder.addDatasets(Arrays.asList(line.getOptionValue("dataset").split(",")));
+		    }
+		    if (line.hasOption( "index" )) {
+		    	experimentBuilder.addProvenanceIndexes(Arrays.asList(line.getOptionValue("index").split(",")));
+		    }
+		    if (line.hasOption( "runs" )) {
+		    	experimentBuilder.setNumberOfExperimentRuns(Integer.valueOf(line.getOptionValue("runs")));
+		    }
+		    if (line.hasOption( "strategies" )) {
+		    	experimentBuilder.addOptimizationStrategies(Arrays.asList(line.getOptionValue("strategies").split(",")));
+		    }
+		    if (line.hasOption("config")) {
+		    	try (BufferedReader br = new BufferedReader(new FileReader(line.getOptionValue("config")))) {
+
+					String fileLine;
+					while ((fileLine = br.readLine()) != null) {
+						if (fileLine.startsWith("aq")) {
+							experimentBuilder.addAnalyticalQuery(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("pq")) {
+							experimentBuilder.addProvenanceQuery(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("dataset")) {
+							experimentBuilder.addDataset(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("strategy")) {
+							experimentBuilder.addOptimizationStrategy(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("runs")) {
+							experimentBuilder.setNumberOfExperimentRuns(Integer.valueOf(fileLine.split(" ")[1]));
+						}
+						if (fileLine.startsWith("index")) {
+							experimentBuilder.addProvenanceIndex(fileLine.split(" ")[1]);
+						}
+					}
+		    	}
+		    }
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch( ParseException exp ) {
+			printHelp(exp, options);
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+		
+		//labtopTest();
 		Experiment experiments = experimentBuilder.build();
 		experiments.run();
     }
+	
+	private static void printHelp(ParseException exp, Options options) {
+		String header = "";
+		HelpFormatter formatter = new HelpFormatter();
+		if (exp != null) {
+			header = "Unexpected exception:" + exp.getMessage();
+		}
+		formatter.printHelp("myapp", header, options, null, true);
+	}
 }
