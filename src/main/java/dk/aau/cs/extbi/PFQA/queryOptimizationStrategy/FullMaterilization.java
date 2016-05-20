@@ -26,16 +26,14 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 		dataset.begin(ReadWrite.WRITE) ;
 		logger.startPrepareOptimizationStrategy();
 		
-		if (!dataset.containsNamedModel(modelName)) {
-			String queryString = createQuery();
-			
-			Query query = QueryFactory.create(queryString) ;
-			QueryExecution qexec = QueryExecutionFactory.create(query, dataset) ;
-			Model resultModel = qexec.execConstruct() ;
-			qexec.close() ;
-			
-			dataset.addNamedModel(modelName, resultModel);
-		}
+		String queryString = createQuery();
+		
+		Query query = QueryFactory.create(queryString) ;
+		QueryExecution qexec = QueryExecutionFactory.create(query, dataset) ;
+		Model resultModel = qexec.execConstruct() ;
+		qexec.close() ;
+		
+		dataset.addNamedModel(modelName, resultModel);
 		
 		dataset.commit();
 		dataset.end();
