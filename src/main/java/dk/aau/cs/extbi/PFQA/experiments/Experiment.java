@@ -46,8 +46,6 @@ public class Experiment {
 				
 				for (SimpleEntry<String, Query> provenanceQuery : provenanceQueries) {
 					logger.startProvenanceQueryContext(provenanceQuery);
-					ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
-					ContextSet contextSetPQ = provenaceQueryExecutor.getContext(provenanceQuery.getValue());
 					
 					for (String strategyString : optimizationStrategies) {
 						logger.startOptimizationStrategyContext(strategyString);
@@ -60,6 +58,9 @@ public class Experiment {
 								
 								for (int i = 0; i < numberOfExperimentRuns; i++) {
 									logger.startExperimentRun(i+1);
+									
+									ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
+									ContextSet contextSetPQ = provenaceQueryExecutor.getContext(provenanceQuery.getValue());
 									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
