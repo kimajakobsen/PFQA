@@ -46,7 +46,6 @@ public class QueryProfile {
 		    for (TriplePatternContainer triplePattern : tripleContainers) {
 		    	predicatePaths.addTriplePatternContainer(triplePattern);
 			}
-		    System.out.println(predicatePaths);
 		}
 		logger.endBuildQueryProfile();
 	} 
