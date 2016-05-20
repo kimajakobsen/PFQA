@@ -13,7 +13,6 @@ import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
 
-
 public class ProvenanceQueryExecutor {
 
 	public ContextSet getContext(Query pq) {
@@ -25,16 +24,15 @@ public class ProvenanceQueryExecutor {
 		
 		logger.startProvenanceQueryExecution();
 		ResultSet results = qexec.execSelect() ;
-		logger.endProvenanceQueryExecution();
 		
 		for ( ; results.hasNext() ; ) {
 			  QuerySolution soln = results.nextSolution() ;
 			  contextSet.add(soln.get("?s").toString());
 			}
+		logger.endProvenanceQueryExecution();
 		
 		dataset.commit();
 		dataset.end();
 		return contextSet;
 	}
-
 }
