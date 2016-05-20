@@ -4,7 +4,6 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
 import org.apache.jena.query.Query;
-import org.apache.jena.query.ResultSet;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
