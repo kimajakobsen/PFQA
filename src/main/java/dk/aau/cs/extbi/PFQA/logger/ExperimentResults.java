@@ -18,11 +18,30 @@ public class ExperimentResults {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter("the-file-name.txt", "UTF-8");
+			writer.print("UnixTimestamp\t");
+			writer.print("StrategyName\t");
+			writer.print("Dataset\t");
+			writer.print("ExperimentRunNumber\t");
+			writer.print("AnalyticalQuery\t");
+			writer.print("ProvenanceQuery\t");
+			writer.print("Strategy\t");
+			writer.print("Index\t");
+			writer.print("ProvenanceQueryExecutionDuration\t");
+			writer.print("ReadIndexDuration\t");
+			writer.print("BuildIndexDuration\t");
+			writer.print("WriteIndexToDiskDuration\t");
+			writer.print("BuildQueryProfileDuration\t");
+			writer.print("IndexLookupDuration\t");
+			writer.print("IntersectContextSetDuration\t");
+			writer.print("PrepairOptimizationStrategyDuration\t");
+			writer.print("ExecuteAnalyticalQueryDuration\t");
+			writer.print("TotalDuration");
+		    writer.println("");
+			
 			for (AnalyticalQueryResult analyticalQueryResult : results) {
 				writer.print(analyticalQueryResult.getUnixTimestamp()+"\t");
 				writer.print(analyticalQueryResult.getStrategyName()+"\t");
 				writer.print(analyticalQueryResult.getDataset().getKey()+"\t");
-				writer.print(analyticalQueryResult.getTotalDuration()+"\t");
 				writer.print(analyticalQueryResult.getExperimentRunNumber()+"\t");
 				writer.print(analyticalQueryResult.getAnalyticalQuery().getKey()+"\t");
 				writer.print(analyticalQueryResult.getProvenanceQuery().getKey()+"\t");
@@ -36,7 +55,8 @@ public class ExperimentResults {
 			    writer.print(analyticalQueryResult.getIndexLookupDuration()+"\t");
 			    writer.print(analyticalQueryResult.getIntersectContextSetDuration()+"\t");
 			    writer.print(analyticalQueryResult.getPrepairOptimizationStrategyDuration()+"\t");
-			    writer.print(analyticalQueryResult.getExecuteAnalyticalQueryDuration());
+			    writer.print(analyticalQueryResult.getExecuteAnalyticalQueryDuration()+"\t");
+			    writer.print(analyticalQueryResult.getTotalDuration());
 			    writer.println("");
 			}
 			writer.close();
@@ -49,12 +69,11 @@ public class ExperimentResults {
 	
 	public void printToSystemOut() {
 		for (AnalyticalQueryResult analyticalQueryResult : results) {
-			System.out.println("Dataset: analyticalQueryResult.getDataset().getKey()");
+			System.out.println("Dataset:"+ analyticalQueryResult.getDataset().getKey());
 			
 			System.out.println("Analytical Query: " + analyticalQueryResult.getAnalyticalQuery().getKey());
 			
-			System.out.println("Provenance Query:");
-			System.out.println(analyticalQueryResult.getProvenanceQuery().toString());
+			System.out.println("Provenance Query: " + analyticalQueryResult.getProvenanceQuery().getKey());
 			
 			System.out.println("Using Index: "+analyticalQueryResult.getIndex());
 			System.out.println("using Strategy: "+analyticalQueryResult.getStrategy());
