@@ -5,8 +5,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import org.apache.jena.query.ResultSetFormatter;
-
 public class ExperimentResults {
 	private ArrayList<AnalyticalQueryResult> results = new ArrayList<AnalyticalQueryResult>();
 	
@@ -90,7 +88,7 @@ public class ExperimentResults {
 			System.out.println("Execute query: "+ analyticalQueryResult.getExecuteAnalyticalQueryDuration());
 			System.out.println("Total: " + analyticalQueryResult.getTotalDuration());
 			
-			ResultSetFormatter.out(analyticalQueryResult.getResult());
+			System.out.println((analyticalQueryResult.getResult()));
 		}
 	}
 }

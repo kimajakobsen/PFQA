@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
-import org.apache.jena.query.ResultSet;
 
 public class Logger {
 	
@@ -35,7 +34,7 @@ public class Logger {
     private long prepairOptimizationStrategyDuration;
     private Instant executeAnalyticalQueryStart;
     private long executeAnalyticalQueryDuration;
-	private ResultSet resultSet;
+	private String resultSet;
 	private SimpleEntry<String, String> dataset;
 	private int experimentRun;
 	private LocalDateTime time; 
@@ -156,7 +155,7 @@ public class Logger {
 		executeAnalyticalQueryStart = null;
 	}
 
-	public void setResult(ResultSet result) {
+	public void setResult(String result) {
 		this.resultSet = result;
 	}
 

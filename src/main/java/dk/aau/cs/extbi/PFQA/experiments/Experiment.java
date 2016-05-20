@@ -64,7 +64,7 @@ public class Experiment {
 									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
-									ResultSet result =  strategy.execute(analyticalQuery.getValue());
+									String result =  strategy.execute(analyticalQuery.getValue());
 									logger.setResult(result);
 									logger.commitResult();
 								}

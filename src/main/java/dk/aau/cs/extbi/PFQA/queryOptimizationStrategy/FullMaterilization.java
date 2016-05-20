@@ -7,6 +7,7 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.tdb.TDBFactory;
 
@@ -59,7 +60,7 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 	}
 	
 	@Override
-	public ResultSet execute(Query aq) {
+	public String execute(Query aq) {
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		dataset.begin(ReadWrite.READ) ;
 		logger.startExecuteQuery();
@@ -70,6 +71,6 @@ public class FullMaterilization extends QueryOptimizationStrategy {
 		
 		dataset.commit();
 		dataset.end();
-		return results;
+		return ResultSetFormatter.asText(results);
 	}
 }
