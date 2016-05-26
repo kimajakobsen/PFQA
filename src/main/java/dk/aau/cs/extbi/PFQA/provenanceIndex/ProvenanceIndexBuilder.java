@@ -34,7 +34,6 @@ public class ProvenanceIndexBuilder {
 				Logger logger = Logger.getInstance();
 				FileInputStream fileIn = new FileInputStream(Config.getDatasetLocation()+indexPath);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
-				System.out.println("Loading index");
 				
 				logger.startReadIndex();
 				index = (ProvenanceIndex) in.readObject();
@@ -44,7 +43,6 @@ public class ProvenanceIndexBuilder {
 				fileIn.close();
 				return index; 
 		 	} catch (IOException e) {
-		 		System.out.println("Building a new index");
 		 		return buildNewContextTreeIndex();
 		 	} catch (ClassNotFoundException e) {
 				e.printStackTrace();

@@ -70,6 +70,7 @@ public class Experiment {
 									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
+									System.out.println("executing: "+strategyString+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getKey()+" on "+dataset.getKey());
 									String result =  strategy.execute(analyticalQuery.getValue());
 									logger.setResult(result);
 									logger.commitResult();
