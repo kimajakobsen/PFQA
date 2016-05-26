@@ -11,7 +11,8 @@ public class Logger {
 	
 	private static Logger logger = new Logger();
 	private ExperimentResults results = new ExperimentResults();
-	private AnalyticalQueryResult result;
+	private QueryTimes result;
+	private StartupTimes startup;
 	private SimpleEntry<String, Query> analyticalQuery;
 	private SimpleEntry<String, Query> provenanceQuery;
 	private String strategy;
@@ -41,7 +42,6 @@ public class Logger {
 	
 	private Logger(){
 		time = LocalDateTime.now();
-		
 	}
 	
 	public static Logger getInstance() {
@@ -160,11 +160,9 @@ public class Logger {
 	}
 
 	public void commitResult() {
-		result = new AnalyticalQueryResult(analyticalQuery, provenanceQuery,strategy,index, resultSet, time);
+		result = new QueryTimes(analyticalQuery, provenanceQuery,strategy,index, resultSet, time);
 		result.addProvenanceQueryExecution(provenanceQueryExecutionDuration);
-		result.addBuildIndex(buildIndexDuration);
 		result.addReadIndex(readIndexDuration);
-		result.addWriteIndexToDisk(writeIndexToDiskDuration);
 		result.addBuildQueryProfile(buildQueryProfileDuration);
 		result.addIndexLookup(indexLookupDuration);
 		result.addIntersectContextSet(intersectContextSetDuration);
@@ -186,14 +184,6 @@ public class Logger {
 		provenanceQueryExecutionDuration = 0;
 		readIndexStart = null;
 		readIndexDuration = 0;
-		buildIndexStart = null;
-		buildIndexDuration = 0;
-		writeIndexToDiskStart = null;
-		writeIndexToDiskDuration = 0;
-		buildQueryProfileStart = null;
-		buildQueryProfileDuration = 0;
-		indexLookupStart = null;
-		indexLookupDuration = 0;
 		intersectContextSetStart = null;
 		intersectContextSetDuration = 0;
 		prepairOptimizationStrategyStart = null;
@@ -212,5 +202,18 @@ public class Logger {
 
 	public void printToFile() {
 		results.printToFile();
+	}
+
+	public void writeToDB() {
+		results.writeToDB();
+	}
+
+	public void commitStartupTime() {
+		startup = new StartupTimes(time,dataset,index);
+		startup.setBuildIndex(buildIndexDuration);
+		startup.setWriteIndexToDisk(writeIndexToDiskDuration);
+		
+		results.add(startup);
+		
 	}
 }

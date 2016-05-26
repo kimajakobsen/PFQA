@@ -8,6 +8,8 @@ import org.apache.jena.query.Query;
 import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
+import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndex;
+import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndexBuilder;
 import dk.aau.cs.extbi.PFQA.provenanceQeuryExecutor.ProvenanceQueryExecutor;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategy;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategyBuilder;
@@ -19,6 +21,7 @@ public class Experiment {
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
 	private ArrayList<SimpleEntry<String, String>> datasets;
 	private int numberOfExperimentRuns;
+	private ProvenanceIndex pi;
 	
 	public Experiment(ArrayList<SimpleEntry<String, Query>> analyticalQueries2,
 			ArrayList<SimpleEntry<String, Query>> provenanceQueries2,
@@ -40,19 +43,22 @@ public class Experiment {
 		for (SimpleEntry<String, String> dataset : datasets) {
 			logger.startDataset(dataset);
 			Config.setDatasetLocation(dataset.getValue());
-		
-			for (SimpleEntry<String, Query> analyticalQuery : analyticalQueries) {
-				logger.startAnalyticalQueryContex(analyticalQuery);
+			
+			for (String index : provenanceIndices) {
+				logger.startProvenanceIndexContext(index);
 				
-				for (SimpleEntry<String, Query> provenanceQuery : provenanceQueries) {
-					logger.startProvenanceQueryContext(provenanceQuery);
+				ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(index);
+				pi = provenanceIndexBuilder.build(); 
+		
+				for (SimpleEntry<String, Query> analyticalQuery : analyticalQueries) {
+					logger.startAnalyticalQueryContex(analyticalQuery);
 					
-					for (String strategyString : optimizationStrategies) {
-						logger.startOptimizationStrategyContext(strategyString);
+					for (SimpleEntry<String, Query> provenanceQuery : provenanceQueries) {
+						logger.startProvenanceQueryContext(provenanceQuery);
 						
-						for (String index : provenanceIndices) {
-							logger.startProvenanceIndexContext(index);
-							
+						for (String strategyString : optimizationStrategies) {
+							logger.startOptimizationStrategyContext(strategyString);
+						
 							if (isStrategyIndexCombinationLegal(strategyString,index)) {
 								Config.setStrategyName(strategyString+index);
 								
@@ -62,7 +68,7 @@ public class Experiment {
 									ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
 									ContextSet contextSetPQ = provenaceQueryExecutor.getContext(provenanceQuery.getValue());
 									
-									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, index);
+									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
 									String result =  strategy.execute(analyticalQuery.getValue());
 									logger.setResult(result);
@@ -72,10 +78,12 @@ public class Experiment {
 						}
 					}
 				}
+				logger.commitStartupTime();
 			}
 		}
-		logger.printToSystemOut();
-		logger.printToFile();
+		//logger.printToSystemOut();
+		//logger.printToFile();
+		logger.writeToDB();
 	}
 
 	public boolean isStrategyIndexCombinationLegal(String strategyString, String index) {

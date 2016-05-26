@@ -6,7 +6,7 @@ import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
 
-public class AnalyticalQueryResult{
+public class QueryTimes{
 	private SimpleEntry<String,Query> analyticalQuery;
 	private SimpleEntry<String,Query> provenanceQuery;
 	private String strategy;
@@ -14,8 +14,6 @@ public class AnalyticalQueryResult{
 	private String result;
 	private long provenanceQueryExecutionDuration;
 	private long readIndexDuration;
-	private long buildIndexDuration;
-	private long writeIndexToDiskDuration;
 	private long buildQueryProfileDuration;
 	private long indexLookupDuration;
 	private long intersectContextSetDuration;
@@ -26,7 +24,7 @@ public class AnalyticalQueryResult{
 	private int experimentRun;
 	private LocalDateTime timePoint;
 	
-	public AnalyticalQueryResult(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, String resultSet, LocalDateTime time) {
+	public QueryTimes(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, String resultSet, LocalDateTime time) {
 		this.analyticalQuery = analyticalQuery;
 		this.provenanceQuery = provenanceQuery;
 		this.strategy = strategy;
@@ -39,14 +37,6 @@ public class AnalyticalQueryResult{
 		this.provenanceQueryExecutionDuration = (provenanceQueryExecutionDuration);
 	}
 
-	public void addBuildIndex(long buildIndexDuration) {
-		this.buildIndexDuration = (buildIndexDuration);
-	}
-
-	public void addWriteIndexToDisk(long writeIndexToDiskDuration) {
-        this.writeIndexToDiskDuration = (writeIndexToDiskDuration);
-    }
-    
     public void addReadIndex(long readIndexDuration) {
         this.readIndexDuration = (readIndexDuration);
     }
@@ -102,14 +92,12 @@ public class AnalyticalQueryResult{
     public SimpleEntry<String, String> getDataset() {
         return dataset;
     }
-
-	public long getBuildIndexDuration() {
-        return buildIndexDuration;
+    
+    public String getDatasetKey() {
+    	return getDataset().getValue();
     }
 
-    public long getWriteIndexToDiskDuration() {
-        return writeIndexToDiskDuration;
-    }
+	
 
     public long getBuildQueryProfileDuration() {
         return buildQueryProfileDuration;
@@ -138,8 +126,6 @@ public class AnalyticalQueryResult{
     
     public long getTotalDuration() {
     	long total = provenanceQueryExecutionDuration + 
-    			buildIndexDuration + 
-    			writeIndexToDiskDuration + 
     			buildQueryProfileDuration + 
     			indexLookupDuration + 
     			intersectContextSetDuration + 

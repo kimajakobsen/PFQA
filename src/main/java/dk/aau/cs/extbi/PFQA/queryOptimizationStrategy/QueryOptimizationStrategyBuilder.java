@@ -6,30 +6,25 @@ import org.apache.jena.query.Query;
 
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndex;
-import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndexBuilder;
 
 public class QueryOptimizationStrategyBuilder {
 	private String type;
 	private SimpleEntry<String, Query> analyticalQuery;
-	private String provenanceIndex;
+	private ProvenanceIndex pi;
 	
-	public QueryOptimizationStrategyBuilder(String type, SimpleEntry<String, Query> analyticalQuery2, String provenanceIndex) {
+	public QueryOptimizationStrategyBuilder(String type, SimpleEntry<String, Query> analyticalQuery2, ProvenanceIndex pi) {
 		this.type = type;
 		this.analyticalQuery = analyticalQuery2;
-		this.provenanceIndex = provenanceIndex;
+		this.pi = pi;
 	}
 	
 	public QueryOptimizationStrategy build(ContextSet contextSetPQ) {
 		if (type.equals("FullMaterilization")) {
-			ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(provenanceIndex);
-			ProvenanceIndex pi = provenanceIndexBuilder.build(); 
 			
 			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
 			
 			return new FullMaterilization(contextSetMinumum);
 		} else if (type.equals("QueryRewriting")) {
-			ProvenanceIndexBuilder provenanceIndexBuilder = new ProvenanceIndexBuilder(provenanceIndex);
-			ProvenanceIndex pi = provenanceIndexBuilder.build(); 
 			
 			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
 			
