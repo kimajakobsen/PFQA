@@ -8,8 +8,10 @@ public class Config {
 	private static String namespace = "http://example.com/";
 	private static String provenanceNamespace = namespace+"provenance/";
 	private static String cubeName = namespace+"cube/";
-	private static String dataset = "../../provenanceGenerator/sf100l/";
+	private static String dataset;
 	private static ArrayList<String> strategies = new ArrayList<String>();
+	private static String psqlUsername;
+	private static String psqlPassword;
 
 	public static String getNamespace() {
 		return namespace;
@@ -45,5 +47,21 @@ public class Config {
 	
 	public static void setStrategyName(String strategy) {
 		Config.strategies.add(strategy);
+	}
+
+	public static void setPsqlUsername(String string) {
+		Config.psqlUsername = string;
+	}
+
+	public static void setPsqlPassword(String string) {
+		Config.psqlPassword = string;
+	}
+	
+	public static String getPsqlUsername() {
+		return Config.psqlUsername;
+	}
+	
+	public static String getPsqlPassword() {
+		return Config.psqlPassword;
 	}
 }

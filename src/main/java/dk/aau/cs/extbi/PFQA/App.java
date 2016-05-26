@@ -14,6 +14,7 @@ import org.apache.commons.cli.ParseException;
 
 import dk.aau.cs.extbi.PFQA.experiments.Experiment;
 import dk.aau.cs.extbi.PFQA.experiments.ExperimentBuilder;
+import dk.aau.cs.extbi.PFQA.helper.Config;
 
 public class App 
 {
@@ -28,10 +29,12 @@ public class App
 		options.addOption("a", "aq", true, "use analytical queries");
 		options.addOption("s", "strategies", true, "use strategies");
 		options.addOption("i", "index", true, "use indexes");
-		options.addOption("p", "pq", true, "use analytical queries");
+		options.addOption("p", "pq", true, "use provenance queries");
 		options.addOption("d", "dataset", true, "add dataset");
 		options.addOption("c", "config", true, "use a config file");
 		options.addOption("r", "runs", true, "number of runs");
+		options.addOption("u", "username", true, "local psql username");
+		options.addOption("w", "password", true, "local psql password");
 	
 		ExperimentBuilder experimentBuilder = new ExperimentBuilder();
 		
@@ -42,7 +45,6 @@ public class App
 		    	printHelp(null,options);
 		    	System.exit(0);
 			} 
-		    System.out.println(line.getArgList());
 		    if (line.hasOption("aq")) {
 		    	experimentBuilder.addAnalyticalQueries(Arrays.asList(line.getOptionValue("aq").split(",")));
 			}
@@ -60,6 +62,12 @@ public class App
 		    }
 		    if (line.hasOption( "strategies" )) {
 		    	experimentBuilder.addOptimizationStrategies(Arrays.asList(line.getOptionValue("strategies").split(",")));
+		    }
+		    if (line.hasOption( "username" )) {
+		    	Config.setPsqlUsername(line.getOptionValue("username"));
+		    }
+		    if (line.hasOption( "password" )) {
+		    	Config.setPsqlPassword(line.getOptionValue("password"));
 		    }
 		    if (line.hasOption("config")) {
 		    	try (BufferedReader br = new BufferedReader(new FileReader(line.getOptionValue("config")))) {
@@ -83,6 +91,12 @@ public class App
 						}
 						if (fileLine.startsWith("index")) {
 							experimentBuilder.addProvenanceIndex(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("username")) {
+							Config.setPsqlUsername(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("password")) {
+							Config.setPsqlPassword(fileLine.split(" ")[1]);
 						}
 					}
 		    	}
