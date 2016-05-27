@@ -1,5 +1,7 @@
 package dk.aau.cs.extbi.PFQA.experiments;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
@@ -64,15 +66,18 @@ public class Experiment {
 								
 								for (int i = 0; i < numberOfExperimentRuns; i++) {
 									logger.startExperimentRun(i+1);
+									Instant start = Instant.now();
 									
 									ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
 									ContextSet contextSetPQ = provenaceQueryExecutor.getContext(provenanceQuery.getValue());
 									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
-									System.out.println("executing: "+strategyString+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getKey()+" on "+dataset.getKey());
 									String result =  strategy.execute(analyticalQuery.getValue());
 									logger.setResult(result);
+									
+									Duration brutoTime = Duration.between(start, Instant.now());
+									System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getKey()+" on "+dataset.getKey()+ " BrutoTime: "+ brutoTime.toMillis());
 									logger.commitResult();
 								}
 							}
