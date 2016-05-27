@@ -37,7 +37,8 @@ public class ExperimentResults {
 		    			startup.getIndex()+"','"+
 		    			startup.getDataset()+"',"+
 		    			startup.getBuildIndexDuration()+","+
-		    			startup.getWriteIndexToDiskDuration()+");";
+		    			startup.getWriteIndexToDiskDuration()+","+
+		    			startup.getReadIndex()+");";
 		    	System.out.println(sql);
 		        stmt.executeUpdate(sql);
 			}

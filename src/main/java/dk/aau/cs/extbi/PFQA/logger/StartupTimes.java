@@ -11,6 +11,7 @@ public class StartupTimes {
 	private LocalDateTime time;
 	private String index;
 	private String dataset;
+	private long readIndexDuration;
 
 	public StartupTimes(LocalDateTime time, SimpleEntry<String, String> dataset2, String index) {
 		this.time = time;
@@ -49,5 +50,13 @@ public class StartupTimes {
 
 	public void setDataset(String dataset) {
 		this.dataset = dataset;
+	}
+
+	public void setReadIndex(long readIndexDuration) {
+		this.readIndexDuration = readIndexDuration;
+	}
+	
+	public long getReadIndex() {
+		return readIndexDuration;
 	}
 }

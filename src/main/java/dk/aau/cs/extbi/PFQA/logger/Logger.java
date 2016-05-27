@@ -170,20 +170,18 @@ public class Logger {
 		result.addExecuteAnalyticalQuery(executeAnalyticalQueryDuration);
 		result.addDataset(dataset);
 		result.setExperimentRunNumber(experimentRun);
-		
 		results.add(result);
-		clearTempoaryVariables();
+
+		clearTempoaryResultVariables();
 	}
 	
 	public void printToSystemOut() {
 		results.printToSystemOut();
 	}
 	
-	private void clearTempoaryVariables() {
+	private void clearTempoaryResultVariables() {
 		provenanceQueryExecutionStart = null;
 		provenanceQueryExecutionDuration = 0;
-		readIndexStart = null;
-		readIndexDuration = 0;
 		intersectContextSetStart = null;
 		intersectContextSetDuration = 0;
 		prepairOptimizationStrategyStart = null;
@@ -212,8 +210,18 @@ public class Logger {
 		startup = new StartupTimes(time,dataset,index);
 		startup.setBuildIndex(buildIndexDuration);
 		startup.setWriteIndexToDisk(writeIndexToDiskDuration);
-		
+		startup.setReadIndex(readIndexDuration);
 		results.add(startup);
 		
+		clearTempoaryStartupVariables();
+	}
+
+	private void clearTempoaryStartupVariables() {
+		buildIndexStart = null;
+		buildIndexDuration = 0;
+		writeIndexToDiskStart = null;
+		writeIndexToDiskDuration = 0;
+		readIndexStart = null;
+		readIndexDuration = 0;
 	}
 }
