@@ -1,9 +1,7 @@
 package dk.aau.cs.extbi.PFQA.provenanceIndex;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.jena.query.Dataset;
@@ -28,25 +26,25 @@ public class ProvenanceIndexBuilder {
 	}
 	
 	public ProvenanceIndex build() {
-		ProvenanceIndex index = null;
+//		ProvenanceIndex index = null;
 		if (getFileName(indexPath).equals("contextTreeIndex")) {
-			try {  
-				Logger logger = Logger.getInstance();
-				FileInputStream fileIn = new FileInputStream(Config.getDatasetLocation()+indexPath);
-				ObjectInputStream in = new ObjectInputStream(fileIn);
-				
-				logger.startReadIndex();
-				index = (ProvenanceIndex) in.readObject();
-				logger.endReadIndex();
-				
-				in.close();
-				fileIn.close();
-				return index; 
-		 	} catch (IOException e) {
+//			try {  
+//				Logger logger = Logger.getInstance();
+//				FileInputStream fileIn = new FileInputStream(Config.getDatasetLocation()+indexPath);
+//				ObjectInputStream in = new ObjectInputStream(fileIn);
+//				
+//				logger.startReadIndex();
+//				index = (ProvenanceIndex) in.readObject();
+//				logger.endReadIndex();
+//				
+//				in.close();
+//				fileIn.close();
+//				return index; 
+//		 	} catch (IOException e) {
 		 		return buildNewContextTreeIndex();
-		 	} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+//		 	} catch (ClassNotFoundException e) {
+//				e.printStackTrace();
+//			}
 		} else if (getFileName(indexPath).equals("none")) {
 			return new none();
 		}
@@ -193,7 +191,6 @@ public class ProvenanceIndexBuilder {
 		  parent.addChild(soln.get("?G").toString());
 		}
 	}
-
 
 	private String getFileName(String indexPath) {
 		String[] split1 = indexPath.split("/");
