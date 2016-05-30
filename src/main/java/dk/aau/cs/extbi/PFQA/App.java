@@ -35,6 +35,7 @@ public class App
 		options.addOption("r", "runs", true, "number of runs");
 		options.addOption("u", "username", true, "local psql username");
 		options.addOption("w", "password", true, "local psql password");
+		options.addOption("g", "ignore", true, "ignore a named strategy");
 	
 		ExperimentBuilder experimentBuilder = new ExperimentBuilder();
 		
@@ -69,6 +70,9 @@ public class App
 		    if (line.hasOption( "password" )) {
 		    	Config.setPsqlPassword(line.getOptionValue("password"));
 		    }
+		    if (line.hasOption( "ignore" )) {
+		    	experimentBuilder.addIgnoreStrategies(Arrays.asList(line.getOptionValue("ignore").split(",")));
+		    }
 		    if (line.hasOption("config")) {
 		    	try (BufferedReader br = new BufferedReader(new FileReader(line.getOptionValue("config")))) {
 
@@ -97,6 +101,9 @@ public class App
 						}
 						if (fileLine.startsWith("password")) {
 							Config.setPsqlPassword(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("ignore")) {
+							experimentBuilder.addIgnoreStrategy(fileLine.split(" ")[1]);
 						}
 					}
 		    	}

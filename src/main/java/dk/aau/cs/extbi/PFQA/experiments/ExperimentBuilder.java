@@ -12,6 +12,7 @@ public class ExperimentBuilder {
 	private ArrayList<SimpleEntry<String,String>> datasets = new ArrayList<SimpleEntry<String,String>>();
 	private ArrayList<SimpleEntry<String,Query>> provenanceQueries = new ArrayList<SimpleEntry<String,Query>>();
 	private ArrayList<String> optimizationStrategies = new ArrayList<String>();
+	private ArrayList<String> ignoreStrategies = new ArrayList<String>();
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
 	private int numberOfExperimentRuns;
 
@@ -52,7 +53,7 @@ public class ExperimentBuilder {
 	}
 	
 	public Experiment build() {
-		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices, datasets, numberOfExperimentRuns);
+		return new Experiment(analyticalQueries, provenanceQueries, optimizationStrategies, provenanceIndices, datasets, numberOfExperimentRuns, ignoreStrategies);
 	}
 
 	private String getFileName(String path) {
@@ -78,5 +79,15 @@ public class ExperimentBuilder {
 		for (String dataset : datasets) {
 			addDataset(dataset);
 		}
+	}
+
+	public void addIgnoreStrategies(List<String> asList) {
+		for (String string : asList) {
+			addIgnoreStrategy(string);
+		}
+	}
+	
+	public void addIgnoreStrategy(String strategy) {
+		ignoreStrategies.add(strategy);
 	}
 }

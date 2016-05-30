@@ -24,19 +24,22 @@ public class Experiment {
 	private ArrayList<SimpleEntry<String, String>> datasets;
 	private int numberOfExperimentRuns;
 	private ProvenanceIndex pi;
+	private ArrayList<String> ignoreStrategies;
 	
 	public Experiment(ArrayList<SimpleEntry<String, Query>> analyticalQueries2,
 			ArrayList<SimpleEntry<String, Query>> provenanceQueries2,
 			ArrayList<String> optimizationStrategies,
 			ArrayList<String> provenanceIndices, 
 			ArrayList<SimpleEntry<String, String>> datasets, 
-			int numberOfExperimentRuns) {
+			int numberOfExperimentRuns, 
+			ArrayList<String> ignoreStrategies) {
 		this.analyticalQueries = analyticalQueries2;
 		this.provenanceQueries = provenanceQueries2;
 		this.optimizationStrategies = optimizationStrategies;
 		this.provenanceIndices = provenanceIndices;
 		this.datasets = datasets;
 		this.numberOfExperimentRuns = numberOfExperimentRuns;
+		this.ignoreStrategies = ignoreStrategies;
 	}
 
 	public void run() {
@@ -93,7 +96,7 @@ public class Experiment {
 	}
 
 	public boolean isStrategyIndexCombinationLegal(String strategyString, String index) {
-		if (strategyString.equals("Basic") && !index.equals("none")) {
+		if (ignoreStrategies.contains(strategyString+index)) {
 			return false;
 		} else {
 			return true;
