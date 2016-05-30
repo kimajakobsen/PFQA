@@ -19,11 +19,11 @@ public class QueryOptimizationStrategyBuilder {
 	}
 	
 	public QueryOptimizationStrategy build(ContextSet contextSetPQ) {
-		if (type.equals("FullMaterilization")) {
+		if (type.equals("FullMaterialization")) {
 			
 			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
 			
-			return new FullMaterilization(contextSetMinumum);
+			return new FullMaterialization(contextSetMinumum);
 		} else if (type.equals("QueryRewriting")) {
 			
 			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);

@@ -15,11 +15,11 @@ import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
 
-public class FullMaterilization extends QueryOptimizationStrategy {
+public class FullMaterialization extends QueryOptimizationStrategy {
 	private String modelName = Config.getNamespace()+"fullMaterilized";
 	private Logger logger;
 
-	public FullMaterilization(ContextSet contextSetMinumum) {
+	public FullMaterialization(ContextSet contextSetMinumum) {
 		super(contextSetMinumum);
 		
 		logger = Logger.getInstance();
