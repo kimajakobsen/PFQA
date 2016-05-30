@@ -3,6 +3,8 @@ package dk.aau.cs.extbi.PFQA.provenanceIndex;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.time.Duration;
+import java.time.Instant;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
@@ -55,6 +57,7 @@ public class ProvenanceIndexBuilder {
 		// Tree is hardcoded to SSB qb4olap structure
 		Logger logger = Logger.getInstance();
 		logger.startBuildIndex();
+		Instant start = Instant.now();
 		ContextTreeIndexNode<String> root = new ContextTreeIndexNode<String>("root");
 		{
 			root.addChild(createURI("quantity"));
@@ -156,14 +159,15 @@ public class ProvenanceIndexBuilder {
 		}
 		dataset.end();
 		logger.endBuildIndex();
+		System.out.println("build index: ContextTreeIndex, Time: "+ Duration.between(start, Instant.now()).toMillis());
 	
 		ProvenanceIndex pi = new ContextTreeIndex(root);
-		try {
-			SerilizeIndex(pi);
-		} catch (IOException e) {
-			System.out.println("Problem serializing: " + e);
-			e.printStackTrace();
-		}
+//		try {
+//			SerilizeIndex(pi);
+//		} catch (IOException e) {
+//			System.out.println("Problem serializing: " + e);
+//			e.printStackTrace();
+//		}
 		return pi;
 	}
 
