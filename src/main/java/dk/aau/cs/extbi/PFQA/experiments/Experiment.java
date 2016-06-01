@@ -12,7 +12,7 @@ import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndex;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndexBuilder;
-import dk.aau.cs.extbi.PFQA.provenanceQeuryExecutor.ProvenanceQueryExecutor;
+import dk.aau.cs.extbi.PFQA.provenanceQueryExecutor.ProvenanceQueryExecutor;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategy;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategyBuilder;
 

@@ -1,4 +1,4 @@
-package dk.aau.cs.extbi.PFQA.provenanceQeuryExecutor;
+package dk.aau.cs.extbi.PFQA.provenanceQueryExecutor;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
