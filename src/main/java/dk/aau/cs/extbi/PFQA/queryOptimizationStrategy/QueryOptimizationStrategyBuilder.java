@@ -28,7 +28,7 @@ public class QueryOptimizationStrategyBuilder {
 			
 			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
 			
-			return new QueryRewriting(contextSetMinumum);
+			return new NativeQuerying(contextSetMinumum);
 		} else {
 			throw new IllegalArgumentException("The strategy "+type+" is not known.");
 		}

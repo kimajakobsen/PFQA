@@ -14,11 +14,11 @@ import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
 
-public class QueryRewriting extends QueryOptimizationStrategy {
+public class NativeQuerying extends QueryOptimizationStrategy {
 
 	private Logger logger;
 
-	public QueryRewriting(ContextSet contextSetMinumum) {
+	public NativeQuerying(ContextSet contextSetMinumum) {
 		super(contextSetMinumum);
 	}
 	
