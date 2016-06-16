@@ -36,6 +36,7 @@ public class App
 		options.addOption("u", "username", true, "local psql username");
 		options.addOption("w", "password", true, "local psql password");
 		options.addOption("g", "ignore", true, "ignore a named strategy");
+		options.addOption("f", "pf", true, "load files or folder with context values");
 	
 		ExperimentBuilder experimentBuilder = new ExperimentBuilder();
 		
@@ -73,6 +74,9 @@ public class App
 		    if (line.hasOption( "ignore" )) {
 		    	experimentBuilder.addIgnoreStrategies(Arrays.asList(line.getOptionValue("ignore").split(",")));
 		    }
+		    if (line.hasOption( "pf" )) {
+		    	experimentBuilder.addContextValueFiles(Arrays.asList(line.getOptionValue("pf").split(",")));
+		    }
 		    if (line.hasOption("config")) {
 		    	try (BufferedReader br = new BufferedReader(new FileReader(line.getOptionValue("config")))) {
 
@@ -104,6 +108,9 @@ public class App
 						}
 						if (fileLine.startsWith("ignore")) {
 							experimentBuilder.addIgnoreStrategy(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("pf")) {
+							experimentBuilder.addContextValueFile(fileLine.split(" ")[1]);
 						}
 					}
 		    	}

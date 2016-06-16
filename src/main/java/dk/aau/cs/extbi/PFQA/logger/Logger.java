@@ -7,6 +7,8 @@ import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
 
+import dk.aau.cs.extbi.PFQA.provenanceQueryExecutor.ProvenanceQuery;
+
 public class Logger {
 	
 	private static Logger logger = new Logger();
@@ -14,7 +16,7 @@ public class Logger {
 	private QueryTimes result;
 	private StartupTimes startup;
 	private SimpleEntry<String, Query> analyticalQuery;
-	private SimpleEntry<String, Query> provenanceQuery;
+	private ProvenanceQuery provenanceQuery;
 	private String strategy;
 	private String index;
     private Instant provenanceQueryExecutionStart;
@@ -48,12 +50,12 @@ public class Logger {
 		return logger;
 	}
 
-	public void startAnalyticalQueryContex(SimpleEntry<String, Query> analyticalQuery2) {
-		this.analyticalQuery = analyticalQuery2;
+	public void startAnalyticalQueryContex(SimpleEntry<String, Query> analyticalQuery) {
+		this.analyticalQuery = analyticalQuery;
 	}
 	
-	public void startProvenanceQueryContext(SimpleEntry<String, Query> provenanceQuery2) {
-		this.provenanceQuery = provenanceQuery2;
+	public void startProvenanceQueryContext(ProvenanceQuery provenanceQuery) {
+		this.provenanceQuery = provenanceQuery;
 	}
 
 	public void startOptimizationStrategyContext(String strategyString) {

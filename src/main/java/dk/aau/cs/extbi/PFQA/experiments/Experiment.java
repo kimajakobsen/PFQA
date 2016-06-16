@@ -12,13 +12,13 @@ import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndex;
 import dk.aau.cs.extbi.PFQA.provenanceIndex.ProvenanceIndexBuilder;
-import dk.aau.cs.extbi.PFQA.provenanceQueryExecutor.ProvenanceQueryExecutor;
+import dk.aau.cs.extbi.PFQA.provenanceQueryExecutor.ProvenanceQuery;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategy;
 import dk.aau.cs.extbi.PFQA.queryOptimizationStrategy.QueryOptimizationStrategyBuilder;
 
 public class Experiment {
 	private ArrayList<SimpleEntry<String, Query>> analyticalQueries = new ArrayList<SimpleEntry<String, Query>>();
-	private ArrayList<SimpleEntry<String, Query>> provenanceQueries = new ArrayList<SimpleEntry<String, Query>>();
+	private ArrayList<ProvenanceQuery> provenanceQueries = new ArrayList<ProvenanceQuery>();
 	private ArrayList<String> optimizationStrategies = new ArrayList<String>();
 	private ArrayList<String> provenanceIndices = new ArrayList<String>();
 	private ArrayList<SimpleEntry<String, String>> datasets;
@@ -26,15 +26,15 @@ public class Experiment {
 	private ProvenanceIndex pi;
 	private ArrayList<String> ignoreStrategies;
 	
-	public Experiment(ArrayList<SimpleEntry<String, Query>> analyticalQueries2,
-			ArrayList<SimpleEntry<String, Query>> provenanceQueries2,
+	public Experiment(ArrayList<SimpleEntry<String, Query>> analyticalQueries,
+			ArrayList<ProvenanceQuery> provenanceQueries,
 			ArrayList<String> optimizationStrategies,
 			ArrayList<String> provenanceIndices, 
 			ArrayList<SimpleEntry<String, String>> datasets, 
 			int numberOfExperimentRuns, 
 			ArrayList<String> ignoreStrategies) {
-		this.analyticalQueries = analyticalQueries2;
-		this.provenanceQueries = provenanceQueries2;
+		this.analyticalQueries = analyticalQueries;
+		this.provenanceQueries = provenanceQueries;
 		this.optimizationStrategies = optimizationStrategies;
 		this.provenanceIndices = provenanceIndices;
 		this.datasets = datasets;
@@ -58,7 +58,7 @@ public class Experiment {
 				for (SimpleEntry<String, Query> analyticalQuery : analyticalQueries) {
 					logger.startAnalyticalQueryContex(analyticalQuery);
 					
-					for (SimpleEntry<String, Query> provenanceQuery : provenanceQueries) {
+					for (ProvenanceQuery provenanceQuery : provenanceQueries) {
 						logger.startProvenanceQueryContext(provenanceQuery);
 						
 						for (String strategyString : optimizationStrategies) {
@@ -71,8 +71,7 @@ public class Experiment {
 									logger.startExperimentRun(i+1);
 									Instant start = Instant.now();
 									
-									ProvenanceQueryExecutor provenaceQueryExecutor = new ProvenanceQueryExecutor();
-									ContextSet contextSetPQ = provenaceQueryExecutor.getContext(provenanceQuery.getValue());
+									ContextSet contextSetPQ = provenanceQuery.execute();
 									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
@@ -80,7 +79,7 @@ public class Experiment {
 									logger.setResult(result);
 									
 									Duration brutoTime = Duration.between(start, Instant.now());
-									System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getKey()+" on "+dataset.getKey()+ " BrutoTime: "+ brutoTime.toMillis());
+									System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTime: "+ brutoTime.toMillis());
 									logger.commitResult();
 								}
 							}

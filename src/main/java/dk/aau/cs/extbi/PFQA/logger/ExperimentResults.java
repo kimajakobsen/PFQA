@@ -51,7 +51,7 @@ public class ExperimentResults {
 		        		analyticalQueryResult.getDatasetKey()+"',"+
 		        		analyticalQueryResult.getExperimentRunNumber()+",'"+
 		        		analyticalQueryResult.getAnalyticalQuery().getKey()+"','"+
-		        		analyticalQueryResult.getProvenanceQuery().getKey()+"','"+
+		        		analyticalQueryResult.getProvenanceQuery().getName()+"','"+
 		        		analyticalQueryResult.getStrategy()+"','"+
 		        		analyticalQueryResult.getIndex()+"',"+
 		        		analyticalQueryResult.getProvenanceQueryExecutionDuration()+","+
@@ -103,7 +103,7 @@ public class ExperimentResults {
 				writer.print(analyticalQueryResult.getDataset().getKey()+"\t");
 				writer.print(analyticalQueryResult.getExperimentRunNumber()+"\t");
 				writer.print(analyticalQueryResult.getAnalyticalQuery().getKey()+"\t");
-				writer.print(analyticalQueryResult.getProvenanceQuery().getKey()+"\t");
+				writer.print(analyticalQueryResult.getProvenanceQuery().getName()+"\t");
 				writer.print(analyticalQueryResult.getStrategy()+"\t");
 				writer.print(analyticalQueryResult.getIndex()+"\t");
 			    writer.print(analyticalQueryResult.getProvenanceQueryExecutionDuration()+"\t");
@@ -130,7 +130,7 @@ public class ExperimentResults {
 			
 			System.out.println("Analytical Query: " + analyticalQueryResult.getAnalyticalQuery().getKey());
 			
-			System.out.println("Provenance Query: " + analyticalQueryResult.getProvenanceQuery().getKey());
+			System.out.println("Provenance Query: " + analyticalQueryResult.getProvenanceQuery().getName());
 			
 			System.out.println("Using Index: "+analyticalQueryResult.getIndex());
 			System.out.println("using Strategy: "+analyticalQueryResult.getStrategy());

@@ -6,9 +6,11 @@ import java.util.AbstractMap.SimpleEntry;
 
 import org.apache.jena.query.Query;
 
+import dk.aau.cs.extbi.PFQA.provenanceQueryExecutor.ProvenanceQuery;
+
 public class QueryTimes{
 	private SimpleEntry<String,Query> analyticalQuery;
-	private SimpleEntry<String,Query> provenanceQuery;
+	private ProvenanceQuery provenanceQuery;
 	private String strategy;
 	private String index;
 	private String result;
@@ -24,7 +26,7 @@ public class QueryTimes{
 	private int experimentRun;
 	private LocalDateTime timePoint;
 	
-	public QueryTimes(SimpleEntry<String,Query> analyticalQuery, SimpleEntry<String,Query> provenanceQuery, String strategy, String index, String resultSet, LocalDateTime time) {
+	public QueryTimes(SimpleEntry<String,Query> analyticalQuery, ProvenanceQuery provenanceQuery, String strategy, String index, String resultSet, LocalDateTime time) {
 		this.analyticalQuery = analyticalQuery;
 		this.provenanceQuery = provenanceQuery;
 		this.strategy = strategy;
@@ -65,7 +67,7 @@ public class QueryTimes{
 		return analyticalQuery;
 	}
 
-	public SimpleEntry<String, Query> getProvenanceQuery() {
+	public ProvenanceQuery getProvenanceQuery() {
 		return provenanceQuery;
 	}
 
