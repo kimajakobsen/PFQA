@@ -5,7 +5,17 @@ import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 
+import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.ReadWrite;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.tdb.TDBFactory;
+import org.apache.jena.update.UpdateAction;
+import org.apache.jena.update.UpdateFactory;
+import org.apache.jena.update.UpdateRequest;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
@@ -60,6 +70,7 @@ public class Experiment {
 					
 					for (ProvenanceQuery provenanceQuery : provenanceQueries) {
 						logger.startProvenanceQueryContext(provenanceQuery);
+						deleteFullyMaterializedCube();
 						
 						for (String strategyString : optimizationStrategies) {
 							logger.startOptimizationStrategyContext(strategyString);
@@ -92,6 +103,17 @@ public class Experiment {
 		//logger.printToSystemOut();
 		//logger.printToFile();
 		logger.writeToDB();
+	}
+
+	private void deleteFullyMaterializedCube() {
+		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
+		dataset.begin(ReadWrite.WRITE) ;
+    	UpdateRequest request = UpdateFactory.create() ;
+    	request.add("DROP GRAPH <http://example.com/fullMaterilized>") ;
+
+    	// And perform the operations.
+    	UpdateAction.execute(request, dataset) ;
+    	dataset.commit();
 	}
 
 	public boolean isStrategyIndexCombinationLegal(String strategyString, String index) {
