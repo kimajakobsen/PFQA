@@ -34,7 +34,6 @@ public class NativeQuerying extends QueryOptimizationStrategy {
 		newQuery.addGraphURI(Config.getCubeStructureGraphName());
 		logger.endPrepareOptimizationStrategy();
 		return newQuery;
-		
 	}
 	
 	@Override

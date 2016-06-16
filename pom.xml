@@ -70,7 +70,5 @@
 			<artifactId>collections-generic</artifactId>
 			<version>4.01</version>
 		</dependency>
-		
-		
 	</dependencies>
 </project>
