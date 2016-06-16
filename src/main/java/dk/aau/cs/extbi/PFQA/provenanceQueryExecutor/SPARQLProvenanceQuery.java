@@ -13,14 +13,21 @@ import dk.aau.cs.extbi.PFQA.helper.Config;
 import dk.aau.cs.extbi.PFQA.helper.ContextSet;
 import dk.aau.cs.extbi.PFQA.logger.Logger;
 
-public class ProvenanceQueryExecutor {
+public class SPARQLProvenanceQuery extends ProvenanceQuery {
 
-	public ContextSet getContext(Query pq) {
+	private Query query;
+
+	public SPARQLProvenanceQuery(String name, Query query){
+		super(name);
+		this.query = query;
+	}
+	
+	public ContextSet execute() {
 		Logger logger = Logger.getInstance();
 		ContextSet contextSet = new ContextSet();
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		dataset.begin(ReadWrite.READ) ;
-		QueryExecution qexec = QueryExecutionFactory.create(pq, dataset) ;
+		QueryExecution qexec = QueryExecutionFactory.create(query, dataset) ;
 		
 		logger.startProvenanceQueryExecution();
 		ResultSet results = qexec.execSelect() ;
