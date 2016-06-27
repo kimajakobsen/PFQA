@@ -46,7 +46,6 @@ public class NativeQuerying extends QueryOptimizationStrategy {
 		ResultSet results = qexec.execSelect() ;
 		logger.endExecuteQuery();
 		
-		dataset.commit();
 		dataset.end();
 		return ResultSetFormatter.asText(results);
 	}
