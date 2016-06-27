@@ -40,13 +40,15 @@ public class NativeQuerying extends QueryOptimizationStrategy {
 	public String execute(Query originalQuery) {
 		Query modifiedQuery = createQuery(originalQuery);
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
-		dataset.begin(ReadWrite.READ) ;
 		logger.startExecuteQuery();
+		
+		dataset.begin(ReadWrite.READ) ;
 		QueryExecution qexec = QueryExecutionFactory.create(modifiedQuery, dataset) ;
 		ResultSet results = qexec.execSelect() ;
-		logger.endExecuteQuery();
-		
+		String result = ResultSetFormatter.asText(results);
 		dataset.end();
-		return ResultSetFormatter.asText(results);
+		
+		logger.endExecuteQuery();
+		return result;
 	}
 }

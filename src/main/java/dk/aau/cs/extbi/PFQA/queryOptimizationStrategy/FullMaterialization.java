@@ -62,15 +62,16 @@ public class FullMaterialization extends QueryOptimizationStrategy {
 	@Override
 	public String execute(Query aq) {
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
-		dataset.begin(ReadWrite.READ) ;
 		logger.startExecuteQuery();
+
+		dataset.begin(ReadWrite.READ) ;
 		Model model = dataset.getNamedModel(modelName);
 		QueryExecution qexec = QueryExecutionFactory.create(aq, model) ;
 		ResultSet results = qexec.execSelect() ;
-		logger.endExecuteQuery();
-		
-		dataset.commit();
+		String result = ResultSetFormatter.asText(results);
 		dataset.end();
-		return ResultSetFormatter.asText(results);
+
+		logger.endExecuteQuery();
+		return result;
 	}
 }
