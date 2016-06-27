@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import dk.aau.cs.extbi.PFQA.helper.Config;
 
@@ -32,35 +33,14 @@ public class ExperimentResults {
 		    
 		    Statement stmt = c.createStatement();
 		    for (StartupTimes startup : startups) {
-		    	String sql = "INSERT INTO startup VALUES ("+
-		    			startup.getUnixTimestamp()+",'"+
-		    			startup.getIndex()+"','"+
-		    			startup.getDataset()+"',"+
-		    			startup.getBuildIndexDuration()+","+
-		    			startup.getWriteIndexToDiskDuration()+","+
-		    			startup.getReadIndex()+");";
+		    	String sql = startupSQL(startup);
 		    	System.out.println(sql);
 		        stmt.executeUpdate(sql);
 			}
 		    
 		    stmt = c.createStatement();
 		    for (QueryTimes analyticalQueryResult : results) {
-		        String sql = "INSERT INTO Results VALUES ("+
-		        		analyticalQueryResult.getUnixTimestamp()+",'"+
-		        		analyticalQueryResult.getStrategyName()+"','"+
-		        		analyticalQueryResult.getDatasetKey()+"',"+
-		        		analyticalQueryResult.getExperimentRunNumber()+",'"+
-		        		analyticalQueryResult.getAnalyticalQuery().getKey()+"','"+
-		        		analyticalQueryResult.getProvenanceQuery().getName()+"','"+
-		        		analyticalQueryResult.getStrategy()+"','"+
-		        		analyticalQueryResult.getIndex()+"',"+
-		        		analyticalQueryResult.getProvenanceQueryExecutionDuration()+","+
-		        		analyticalQueryResult.getBuildQueryProfileDuration()+","+
-		        		analyticalQueryResult.getIndexLookupDuration()+","+
-		        		analyticalQueryResult.getIntersectContextSetDuration()+","+
-		        		analyticalQueryResult.getPrepairOptimizationStrategyDuration()+","+
-		        		analyticalQueryResult.getExecuteAnalyticalQueryDuration()+","+
-		        		analyticalQueryResult.getTotalDuration()+");";
+		        String sql = analytucalQueryResultSQL(analyticalQueryResult);
 		        System.out.println(sql);
 		        stmt.executeUpdate(sql);
 		    }
@@ -73,6 +53,37 @@ public class ExperimentResults {
 		    System.exit(0);
 		}
 		System.out.println("Records created successfully");
+	}
+
+	private String analytucalQueryResultSQL(QueryTimes analyticalQueryResult) {
+		String sql = "INSERT INTO Results VALUES ("+
+				analyticalQueryResult.getUnixTimestamp()+",'"+
+				analyticalQueryResult.getStrategyName()+"','"+
+				analyticalQueryResult.getDatasetKey()+"',"+
+				analyticalQueryResult.getExperimentRunNumber()+",'"+
+				analyticalQueryResult.getAnalyticalQuery().getKey()+"','"+
+				analyticalQueryResult.getProvenanceQuery().getName()+"','"+
+				analyticalQueryResult.getStrategy()+"','"+
+				analyticalQueryResult.getIndex()+"',"+
+				analyticalQueryResult.getProvenanceQueryExecutionDuration()+","+
+				analyticalQueryResult.getBuildQueryProfileDuration()+","+
+				analyticalQueryResult.getIndexLookupDuration()+","+
+				analyticalQueryResult.getIntersectContextSetDuration()+","+
+				analyticalQueryResult.getPrepairOptimizationStrategyDuration()+","+
+				analyticalQueryResult.getExecuteAnalyticalQueryDuration()+","+
+				analyticalQueryResult.getTotalDuration()+");";
+		return sql;
+	}
+
+	private String startupSQL(StartupTimes startup) {
+		String sql = "INSERT INTO startup VALUES ("+
+				startup.getUnixTimestamp()+",'"+
+				startup.getIndex()+"','"+
+				startup.getDataset()+"',"+
+				startup.getBuildIndexDuration()+","+
+				startup.getWriteIndexToDiskDuration()+","+
+				startup.getReadIndex()+");";
+		return sql;
 	}
 
 	public void printToFile() {
@@ -148,5 +159,29 @@ public class ExperimentResults {
 			
 			System.out.println((analyticalQueryResult.getResult()));
 		}
+	}
+
+	public void writeInsertStatementsToFile() {
+		PrintWriter writer;
+		
+		try {
+			System.out.println(String.valueOf(Calendar.getInstance().getTime().getTime()));
+			writer = new PrintWriter(String.valueOf(Calendar.getInstance().getTime().getTime()), "UTF-8");
+			
+			    for (StartupTimes startup : startups) {
+			    	String sql = startupSQL(startup);
+			    	writer.println(sql);
+				}
+			    
+			    for (QueryTimes analyticalQueryResult : results) {
+			        String sql = analytucalQueryResultSQL(analyticalQueryResult);
+			        writer.println(sql);
+			    }
+		   writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }

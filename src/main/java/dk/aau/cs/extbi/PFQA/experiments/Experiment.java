@@ -96,7 +96,12 @@ public class Experiment {
 				logger.commitStartupTime();
 			}
 		}
-		logger.writeToDB();
+		if (Config.isWriteToDatabase()) {
+			logger.writeToDB();
+		} else {
+			logger.writeInsertStatementsToFile();
+		}
+		
 	}
 
 	private void deleteFullyMaterializedCube() {

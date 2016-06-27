@@ -12,6 +12,7 @@ public class Config {
 	private static ArrayList<String> strategies = new ArrayList<String>();
 	private static String psqlUsername;
 	private static String psqlPassword;
+	private static boolean writeToDatabase;
 
 	public static String getNamespace() {
 		return namespace;
@@ -51,6 +52,7 @@ public class Config {
 
 	public static void setPsqlUsername(String string) {
 		Config.psqlUsername = string;
+		Config.setWriteToDatabase(true);
 	}
 
 	public static void setPsqlPassword(String string) {
@@ -63,5 +65,13 @@ public class Config {
 	
 	public static String getPsqlPassword() {
 		return Config.psqlPassword;
+	}
+
+	public static boolean isWriteToDatabase() {
+		return writeToDatabase;
+	}
+
+	public static void setWriteToDatabase(boolean writeToDatabase) {
+		Config.writeToDatabase = writeToDatabase;
 	}
 }

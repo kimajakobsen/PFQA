@@ -226,4 +226,8 @@ public class Logger {
 		readIndexStart = null;
 		readIndexDuration = 0;
 	}
+
+	public void writeInsertStatementsToFile() {
+		results.writeInsertStatementsToFile();
+	}
 }

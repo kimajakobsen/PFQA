@@ -39,7 +39,6 @@ public class App
 		options.addOption("f", "pf", true, "load files or folder with context values");
 	
 		ExperimentBuilder experimentBuilder = new ExperimentBuilder();
-		
 		try {
 		    CommandLine line = parser.parse( options, args );
 		    
