@@ -7,11 +7,7 @@ import java.util.ArrayList;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ReadWrite;
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.update.UpdateAction;
 import org.apache.jena.update.UpdateFactory;
@@ -100,8 +96,6 @@ public class Experiment {
 				logger.commitStartupTime();
 			}
 		}
-		//logger.printToSystemOut();
-		//logger.printToFile();
 		logger.writeToDB();
 	}
 
