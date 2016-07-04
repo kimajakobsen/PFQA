@@ -1,5 +1,7 @@
 package dk.aau.cs.extbi.PFQA.queryOptimizationStrategy;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -67,6 +69,7 @@ public class FullMaterialization extends QueryOptimizationStrategy {
 		dataset.begin(ReadWrite.READ) ;
 		Model model = dataset.getNamedModel(modelName);
 		QueryExecution qexec = QueryExecutionFactory.create(aq, model) ;
+		qexec.setTimeout(Config.getTimeout(), TimeUnit.MINUTES);
 		ResultSet results = qexec.execSelect() ;
 		String result = ResultSetFormatter.asText(results);
 		dataset.end();

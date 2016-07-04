@@ -37,6 +37,7 @@ public class App
 		options.addOption("w", "password", true, "local psql password");
 		options.addOption("g", "ignore", true, "ignore a named strategy");
 		options.addOption("f", "pf", true, "load files or folder with context values");
+		options.addOption("t", "timeout", true, "query timeout in minutes");
 	
 		ExperimentBuilder experimentBuilder = new ExperimentBuilder();
 		try {
@@ -48,6 +49,9 @@ public class App
 			} 
 		    if (line.hasOption("aq")) {
 		    	experimentBuilder.addAnalyticalQueries(Arrays.asList(line.getOptionValue("aq").split(",")));
+			}
+		    if (line.hasOption("timeout")) {
+		    	Config.setTimeoutInMinutes(Integer.valueOf(line.getOptionValue("timeout")));
 			}
 		    if (line.hasOption( "pq" )) {
 		    	experimentBuilder.addProvenanceQueries(Arrays.asList(line.getOptionValue("pq").split(",")));
@@ -110,6 +114,9 @@ public class App
 						}
 						if (fileLine.startsWith("pf")) {
 							experimentBuilder.addContextValueFile(fileLine.split(" ")[1]);
+						}
+						if (fileLine.startsWith("timeout")) {
+							Config.setTimeoutInMinutes(Integer.valueOf(fileLine.split(" ")[1]));
 						}
 					}
 		    	}

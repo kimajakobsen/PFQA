@@ -1,5 +1,7 @@
 package dk.aau.cs.extbi.PFQA.queryOptimizationStrategy;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -38,12 +40,17 @@ public class NativeQuerying extends QueryOptimizationStrategy {
 	
 	@Override
 	public String execute(Query originalQuery) {
+	 	
 		Query modifiedQuery = createQuery(originalQuery);
+		//System.out.println(modifiedQuery);
 		Dataset dataset = TDBFactory.createDataset(Config.getDatasetLocation()) ;
 		logger.startExecuteQuery();
 		
 		dataset.begin(ReadWrite.READ) ;
+		
 		QueryExecution qexec = QueryExecutionFactory.create(modifiedQuery, dataset) ;
+		qexec.setTimeout(Config.getTimeout(), TimeUnit.MINUTES);
+		
 		ResultSet results = qexec.execSelect() ;
 		String result = ResultSetFormatter.asText(results);
 		dataset.end();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Config {
 
-
 	private static String namespace = "http://example.com/";
 	private static String provenanceNamespace = namespace+"provenance/";
 	private static String cubeName = namespace+"cube/";
@@ -13,6 +12,7 @@ public class Config {
 	private static String psqlUsername;
 	private static String psqlPassword;
 	private static boolean writeToDatabase;
+	private static long timeoutMinutes = 0;
 
 	public static String getNamespace() {
 		return namespace;
@@ -73,5 +73,13 @@ public class Config {
 
 	public static void setWriteToDatabase(boolean writeToDatabase) {
 		Config.writeToDatabase = writeToDatabase;
+	}
+	
+	public static void setTimeoutInMinutes(int minutes) {
+		Config.timeoutMinutes = minutes;
+	}
+
+	public static long getTimeout() {
+		return Config.timeoutMinutes;
 	}
 }

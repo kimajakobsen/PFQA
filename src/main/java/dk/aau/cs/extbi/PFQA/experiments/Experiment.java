@@ -82,11 +82,15 @@ public class Experiment {
 									
 									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
 									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
-									String result =  strategy.execute(analyticalQuery.getValue());
-									logger.setResult(result);
-									
-									Duration brutoTime = Duration.between(start, Instant.now());
-									System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTime: "+ brutoTime.toMillis());
+									try {
+										String result =  strategy.execute(analyticalQuery.getValue());
+										logger.setResult(result);
+										Duration brutoTime = Duration.between(start, Instant.now());
+										System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTime: "+ brutoTime.toMillis());
+										System.out.println(result);
+									} catch (Exception e) {
+										System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " Timedout after "+ Config.getTimeout() + " minutes");
+									}
 									logger.commitResult();
 								}
 							}
