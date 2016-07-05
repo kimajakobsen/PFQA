@@ -74,24 +74,25 @@ public class Experiment {
 							if (isStrategyIndexCombinationLegal(strategyString,index)) {
 								Config.setStrategyName(strategyString+index);
 								
-								for (int i = 0; i < numberOfExperimentRuns; i++) {
-									logger.startExperimentRun(i+1);
-									Instant start = Instant.now();
+								try {
+									for (int i = 0; i < numberOfExperimentRuns; i++) {
+										logger.startExperimentRun(i+1);
+										Instant start = Instant.now();
+										
+										ContextSet contextSetPQ = provenanceQuery.execute();
+										
+										QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
+										QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
 									
-									ContextSet contextSetPQ = provenanceQuery.execute();
-									
-									QueryOptimizationStrategyBuilder queryOptimizerStrategyBuilder = new QueryOptimizationStrategyBuilder(strategyString,analyticalQuery, pi);
-									QueryOptimizationStrategy strategy = queryOptimizerStrategyBuilder.build(contextSetPQ);
-									try {
 										String result =  strategy.execute(analyticalQuery.getValue());
 										logger.setResult(result);
 										Duration brutoTime = Duration.between(start, Instant.now());
-										System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTime: "+ brutoTime.toMillis());
+										System.out.println("executing: "+strategyString+index+" #"+ numberOfExperimentRuns +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTimeMin: "+ brutoTime.toMinutes());
 										System.out.println(result);
-									} catch (Exception e) {
-										System.out.println("executing: "+strategyString+index+" "+"AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " Timedout after "+ Config.getTimeout() + " minutes");
+										logger.commitResult();
 									}
-									logger.commitResult();
+								} catch (Exception e) {
+									System.out.println("executing: "+strategyString+index+" #"+ numberOfExperimentRuns +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " Timedout after "+ Config.getTimeout() + " minutes");
 								}
 							}
 						}
