@@ -43,7 +43,7 @@ public class FullMaterialization extends QueryOptimizationStrategy {
 		logger.endPrepareOptimizationStrategy();
 	}
 	
-	private String createQuery() {
+	protected String createQuery() {
 		String query = "" +
 			"CONSTRUCT { " +
 			" ?s ?p ?o . "+

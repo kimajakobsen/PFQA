@@ -19,16 +19,17 @@ public class QueryOptimizationStrategyBuilder {
 	}
 	
 	public QueryOptimizationStrategy build(ContextSet contextSetPQ) {
+		ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
+		
 		if (type.equals("FullMaterialization")) {
-			
-			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
-			
 			return new FullMaterialization(contextSetMinumum);
+			
 		} else if (type.equals("QueryRewriting")) {
-			
-			ContextSet contextSetMinumum = pi.getContext(analyticalQuery,contextSetPQ);
-			
 			return new NativeQuerying(contextSetMinumum);
+			
+		} else if (type.equals("FullMaterializationU")) {
+			return new FullMaterializationUnion(contextSetMinumum);
+			
 		} else {
 			throw new IllegalArgumentException("The strategy "+type+" is not known.");
 		}
