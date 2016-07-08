@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryCancelledException;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.update.UpdateAction;
@@ -87,12 +88,12 @@ public class Experiment {
 										String result =  strategy.execute(analyticalQuery.getValue());
 										logger.setResult(result);
 										Duration brutoTime = Duration.between(start, Instant.now());
-										System.out.println("executing: "+strategyString+index+" #"+ numberOfExperimentRuns +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTimeMin: "+ brutoTime.toMinutes());
+										System.out.println("executing: "+strategyString+index+" #"+ i+1 +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTimeMin: "+ brutoTime.toMinutes());
 										System.out.println(result);
 										logger.commitResult();
 									}
-								} catch (Exception e) {
-									System.out.println("executing: "+strategyString+index+" #"+ numberOfExperimentRuns +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " Timedout after "+ Config.getTimeout() + " minutes");
+								} catch (QueryCancelledException e) {
+									System.out.println("executing: "+strategyString+index +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " Timedout after "+ Config.getTimeout() + " minutes");
 								}
 							}
 						}
