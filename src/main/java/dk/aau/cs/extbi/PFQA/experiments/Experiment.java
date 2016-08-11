@@ -1,5 +1,6 @@
 package dk.aau.cs.extbi.PFQA.experiments;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
@@ -88,7 +89,8 @@ public class Experiment {
 										String result =  strategy.execute(analyticalQuery.getValue());
 										logger.setResult(result);
 										Duration brutoTime = Duration.between(start, Instant.now());
-										System.out.println("executing: "+strategyString+index+" #"+ i+1 +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTimeMin: "+ brutoTime.toMinutes());
+										int[] time = splitToComponentTimes(brutoTime.getSeconds());
+										System.out.println("executing: "+strategyString+index+" #"+ i+1 +" AQ: "+analyticalQuery.getKey()+" PQ:"+provenanceQuery.getName()+" on "+dataset.getKey()+ " BrutoTime: "+time[0]+":"+time[1]+":"+time[2] );
 										System.out.println(result);
 										logger.commitResult();
 									}
@@ -127,5 +129,17 @@ public class Experiment {
 		} else {
 			return true;
 		}
+	}
+	
+	public int[] splitToComponentTimes(long l)
+	{
+	    int hours = (int) l / 3600;
+	    int remainder = (int) l - hours * 3600;
+	    int mins = remainder / 60;
+	    remainder = remainder - mins * 60;
+	    int secs = remainder;
+
+	    int[] ints = {hours , mins , secs};
+	    return ints;
 	}
 }
