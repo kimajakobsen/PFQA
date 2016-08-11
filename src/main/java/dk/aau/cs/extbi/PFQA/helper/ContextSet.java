@@ -33,4 +33,13 @@ public class ContextSet {
 		
 		return this;
 	}
+	
+	public int size() {
+		return contextValues.size();
+	}
+	
+	@Override
+	public String toString() {
+		return contextValues.toString();
+	}
 }
