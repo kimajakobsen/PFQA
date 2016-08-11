@@ -34,6 +34,9 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 		logger.endIndexLookup();
 		
 		ContextSet contextSetMinumum = contextSet.intersect(contextSetPQ);
+		System.out.println("provenance query: "+contextSetPQ.size());
+		System.out.println("index: " + contextSet.size());
+		System.out.println("Interseciton: "+contextSetMinumum.size());
 		
 		return contextSetMinumum;
 	}
