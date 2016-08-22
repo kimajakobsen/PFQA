@@ -30,7 +30,10 @@ public class QueryOptimizationStrategyBuilder {
 		} else if (type.equals("FullMaterializationU")) {
 			return new FullMaterializationUnion(contextSetMinumum);
 			
-		} else {
+		} else if (type.equals("InMemory")) {
+			return new InMemory(contextSetMinumum);
+			
+		}else {
 			throw new IllegalArgumentException("The strategy "+type+" is not known.");
 		}
 	}
