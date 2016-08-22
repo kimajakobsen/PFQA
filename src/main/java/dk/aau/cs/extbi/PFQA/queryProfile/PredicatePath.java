@@ -2,8 +2,6 @@ package dk.aau.cs.extbi.PFQA.queryProfile;
 
 import java.util.ArrayList;
 
-import org.apache.jena.atlas.lib.NotImplemented;
-
 public class PredicatePath {
 	ArrayList<ArrayList<TriplePatternContainer>> paths = new ArrayList<ArrayList<TriplePatternContainer>>();
 
@@ -41,10 +39,12 @@ public class PredicatePath {
 		
 		for (Integer pathIndex : pathMatches) {
 			ArrayList<TriplePatternContainer> path = new ArrayList<TriplePatternContainer>();
-			for (int i = 0; i < TPCMatche; i++) {
+			
+			for (int i = 0; i <= TPCMatche; i++) {
 				path.add(paths.get(pathIndex).get(i));
+				path.add(triplePatternContainer);
 			}
-			addNewPath(path);;
+			addNewPath(path);
 		}
 	}
 
@@ -56,6 +56,7 @@ public class PredicatePath {
 		
 		for (ArrayList<TriplePatternContainer> path : paths) {
 			ArrayList<String> objects = getAllPathObjects(path);
+			
 			for (String object : objects) {
 				if (object.equals(triplePatternContainer.getSubject())) {
 					return true;
@@ -67,6 +68,7 @@ public class PredicatePath {
 
 	private ArrayList<String> getAllPathObjects(ArrayList<TriplePatternContainer> path) {
 		ArrayList<String> objects = new ArrayList<String>();
+		
 		for (TriplePatternContainer triplePatternContainer : path) {
 			objects.add(triplePatternContainer.getObject());
 		}
@@ -76,18 +78,18 @@ public class PredicatePath {
 	private void addTriplePatternToPaths(TriplePatternContainer triplePatternContainer) {
 		int index = 0;
 		ArrayList<Integer> matches = new ArrayList<Integer>();
+		
 		for (ArrayList<TriplePatternContainer> path : paths) {
-			
 			String object = getPathLastObject(path);
 			if (object.equals(triplePatternContainer.getSubject())) {
 				matches.add(index);
 			}
 			index++;
 		}
+		
 		for (Integer integer : matches) {
 			paths.get(integer).add(triplePatternContainer);
 		}
-		
 	}
 
 	private boolean triplePatternMatchLastObjectInPaths(TriplePatternContainer triplePatternContainer) {
@@ -99,7 +101,6 @@ public class PredicatePath {
 		}
 		return false;
 	}
-
 
 	private void addNewPath(TriplePatternContainer triplePatternContainer) {
 		ArrayList<TriplePatternContainer> newPath = new ArrayList<TriplePatternContainer>();
@@ -120,8 +121,5 @@ public class PredicatePath {
 			output += "\n";
 		}
 		return output;
-		
 	}
-	
-	
 }
