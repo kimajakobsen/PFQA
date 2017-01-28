@@ -28,6 +28,7 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 		
 		logger.startIndexLookup();
 		ArrayList<ArrayList<TriplePatternContainer>> pathStructure = queryProfile.getPredicatePaths().getPaths();
+		
 		for (ArrayList<TriplePatternContainer> predicatePath : pathStructure) {
 			contextSet.add(getTreeContextValue(predicatePath, 0, root));
 		}
@@ -42,6 +43,7 @@ public class ContextTreeIndex extends ProvenanceIndex implements java.io.Seriali
 	}
 	
 	private ContextSet getTreeContextValue(ArrayList<TriplePatternContainer> predicatePath, int index, ContextTreeIndexNode<String> tree) {
+		//System.out.println("Node: "+ tree +" Index "+ index + " has children: "+ tree.getChildren());
 		if (predicatePath.size() > index) {
 			ContextTreeIndexNode<String> child = tree.getChild(predicatePath.get(index).getPredicate());
 			//System.out.println("Parent: " + tree + " Child: " + child + " looking for predicatePath "+ predicatePath.get(index).getPredicate());
