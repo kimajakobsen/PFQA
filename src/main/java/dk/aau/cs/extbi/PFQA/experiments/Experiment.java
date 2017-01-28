@@ -33,7 +33,8 @@ public class Experiment {
 	private ProvenanceIndex pi;
 	private ArrayList<String> ignoreStrategies;
 	
-	public Experiment(ArrayList<SimpleEntry<String, Query>> analyticalQueries,
+	public Experiment(
+			ArrayList<SimpleEntry<String, Query>> analyticalQueries,
 			ArrayList<ProvenanceQuery> provenanceQueries,
 			ArrayList<String> optimizationStrategies,
 			ArrayList<String> provenanceIndices, 
@@ -64,6 +65,7 @@ public class Experiment {
 		
 				for (SimpleEntry<String, Query> analyticalQuery : analyticalQueries) {
 					logger.startAnalyticalQueryContex(analyticalQuery);
+					System.out.println("Query: "+ analyticalQuery.getKey());
 					
 					for (ProvenanceQuery provenanceQuery : provenanceQueries) {
 						logger.startProvenanceQueryContext(provenanceQuery);
