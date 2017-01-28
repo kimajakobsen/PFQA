@@ -2,6 +2,7 @@ package dk.aau.cs.extbi.PFQA.queryProfile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,17 +34,23 @@ public class QueryProfile {
 	    		String[] triples = triplesSimicolonSeperated.split(";");
 	    		for (String triple : triples) {
 	    			triple = triple.trim();
-	    			String[] elements = triple.split("[^a-zA-Z0-9\\?:_]+");
-	    			if (elements.length == 3) {
-	    				tripleContainers.add(new TriplePatternContainer(createPrefix(elements[0]),createPrefix(elements[1]),createPrefix(elements[2])));
-					} else if (elements.length == 2) {
-						tripleContainers.add(new TriplePatternContainer(createPrefix(tripleContainers.get(tripleContainers.size()-1).getSubject()),createPrefix(elements[0]),createPrefix(elements[1])));
+	    			List<String> elements = new ArrayList<String>();
+	    			Pattern regex = Pattern.compile("[^\\s\"']+|\"[^\"]*\"@en|\"[^\"]*\"|'[^']*'@en|'[^']*'");
+	    			Matcher regexMatcher = regex.matcher(triple);
+	    			while (regexMatcher.find()) {
+	    				elements.add(regexMatcher.group());
+	    			} 
+	    			if (elements.size() == 3) {
+	    				tripleContainers.add(new TriplePatternContainer(createPrefix(elements.get(0)),createPrefix(elements.get(1)),createPrefix(elements.get(2))));
+					} else if (elements.size() == 2) {
+						tripleContainers.add(new TriplePatternContainer(createPrefix(tripleContainers.get(tripleContainers.size()-1).getSubject()),createPrefix(elements.get(0)),createPrefix(elements.get(1))));
 					} else {
+						System.out.println(elements);
 						throw new IllegalArgumentException("A triple pattern, from the analytical query, does not match the expected length/format. The comma seperator and blank nodes are not supported", null);
 					}
 				}
 			}
-		    for (TriplePatternContainer triplePattern : tripleContainers) {
+ 		    for (TriplePatternContainer triplePattern : tripleContainers) {
 		    	predicatePaths.addTriplePatternContainer(triplePattern);
 			}
 		}
