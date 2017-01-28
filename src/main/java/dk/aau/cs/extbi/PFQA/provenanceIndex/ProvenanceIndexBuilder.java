@@ -68,7 +68,7 @@ public class ProvenanceIndexBuilder {
             root.addChild(createURI("supplycost"));
             root.addChild(createURI("tax"));
             
-            ContextTreeIndexNode<String> customer = root.addChild(createURI("customer"));
+            ContextTreeIndexNode<String> customer = root.addChild(createURI("custkey"));
             {
                 customer.addChild(createURI("custkey"));
                 customer.addChild(createURI("name"));
@@ -80,7 +80,7 @@ public class ProvenanceIndexBuilder {
                 customer.addChild(createURI("mktsegment"));
                 
             }
-            ContextTreeIndexNode<String> part = root.addChild(createURI("part"));
+            ContextTreeIndexNode<String> part = root.addChild(createURI("partkey"));
             {
                 part.addChild(createURI("partkey"));
                 part.addChild(createURI("name"));
@@ -92,7 +92,7 @@ public class ProvenanceIndexBuilder {
                 part.addChild(createURI("size"));
                 part.addChild(createURI("container"));
             }
-            ContextTreeIndexNode<String> supplier = root.addChild(createURI("supplier"));
+            ContextTreeIndexNode<String> supplier = root.addChild(createURI("suppkey"));
             {
                 supplier.addChild(createURI("supkey"));
                 supplier.addChild(createURI("name"));
@@ -175,6 +175,7 @@ public class ProvenanceIndexBuilder {
 		return Config.getNamespace()+string;
 	}
 
+	@SuppressWarnings("unused")
 	private void SerilizeIndex(ProvenanceIndex pi) throws IOException {
 		Logger logger = Logger.getInstance();
 		FileOutputStream fileOut = new FileOutputStream(Config.getDatasetLocation()+indexPath);
