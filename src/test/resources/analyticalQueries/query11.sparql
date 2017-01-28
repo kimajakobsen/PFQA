@@ -8,13 +8,13 @@ WHERE {
 	   :partkey ?lo_partkey ;
 	   :supplycost ?lo_supplycost .
 
-	?lo_custkey :region 'AMERICA' .
-	?lo_suppkey :region 'AMERICA' .
+	?lo_custkey :region 'AMERICA'@en .
+	?lo_suppkey :region 'AMERICA'@en .
 	?lo_custkey :nation ?c_nation .
 	?lo_partkey :mfgr ?p_mfgr . 
 	?lo_orderdate :year ?year .
 	FILTER(?year = 1992)
-	FILTER((?p_mfgr = 'MFGR#1' || ?p_mfgr = 'MFGR#2')).
+	FILTER((?p_mfgr = 'MFGR#1'@en || ?p_mfgr = 'MFGR#2'@en)).
 }
 GROUP BY ?year ?c_nation 
 ORDER BY ?year ?c_nation

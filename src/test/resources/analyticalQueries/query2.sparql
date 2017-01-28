@@ -1,13 +1,12 @@
 PREFIX : <http://example.com/>
-SELECT (SUM(?lo_extendedprice * ?lo_discount) AS ?sum_revenue)
+SELECT (SUM(?extendedprice * ?discount) AS ?sum_revenue)
 WHERE {
-	?li :orderdate ?lo_orderdate ;
-	   :extendedprice ?lo_extendedprice ;
-	   :discount ?lo_discount ;
-	   :quantity ?lo_quantity .
-	?lo_orderdate :year ?year .
-	?lo_orderdate :month ?month .
+	?li :orderdate ?orderdate ;
+	   :extendedprice ?extendedprice ;
+	   :discount ?discount ;
+	   :quantity ?quantity .
+	?orderdate :yeamonthnum ?yearmonth .
 
-	FILTER(?year = 1993 && ?month = 'January')
-	FILTER((?lo_discount >= 1) && (?lo_discount <= 3) && (?lo_quantity < 25)) 
+	FILTER(?yearmonth = 199401)
+	FILTER((?discount >= 1) && (?discount <= 3) && (?quantity < 25)) 
 }

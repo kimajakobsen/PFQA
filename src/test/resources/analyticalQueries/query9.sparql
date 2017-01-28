@@ -10,7 +10,7 @@ WHERE {
 	?lo_orderdate :year ?year .
 
 	FILTER(?year >= 1992 && ?year <= 1997)
-	FILTER((?c_city='UNITED KI1' || ?c_city='UNITED KI5') && (?s_city='UNITED KI1' || ?s_city='UNITED KI5'))
+	FILTER((?c_city='UNITED KI1'@en || ?c_city='UNITED KI5'@en) && (?s_city='UNITED KI1'@en || ?s_city='UNITED KI5'@en))
 }
 GROUP BY ?c_city ?s_city ?year 
 ORDER BY ASC(?year) DESC(?lo_revenue)

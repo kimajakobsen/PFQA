@@ -8,15 +8,15 @@ WHERE {
 	   :revenue ?lo_revenue ;
 	   :supplycost ?lo_supplycost .
 
-	?lo_custkey :region 'AMERICA' .
-	?lo_suppkey :region 'AMERICA' .
+	?lo_custkey :region 'AMERICA'@en .
+	?lo_suppkey :region 'AMERICA'@en .
 	?lo_suppkey :nation ?s_nation .
 	?lo_partkey :mfgr ?p_mfgr .
 	?lo_partkey :category ?p_category .  
 	?lo_orderdate :year ?year .
 
 	FILTER(?year = 1997 || ?year = 1998)
-	FILTER(?p_mfgr = 'MFGR#1' || ?p_mfgr = 'MFGR#2')
+	FILTER(?p_mfgr = 'MFGR#1'@en || ?p_mfgr = 'MFGR#2'@en)
 }
 GROUP BY ?year ?s_nation ?p_category 
 ORDER BY ?year ?s_nation ?p_category

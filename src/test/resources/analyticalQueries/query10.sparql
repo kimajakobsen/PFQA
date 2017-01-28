@@ -10,8 +10,8 @@ WHERE {
 	?lo_orderdate :year ?year .
 	?lo_orderdate :yearmonth ?yearmonth .
 
-	FILTER(?yearmonth = 'Dec1997')
-	FILTER((?c_city='UNITED KI1' || ?c_city='UNITED KI5') && (?s_city='UNITED KI1' || ?s_city='UNITED KI5'))
+	FILTER(?yearmonth = 'Dec1997'@en)
+	FILTER((?c_city='UNITED KI1'@en || ?c_city='UNITED KI5'@en) && (?s_city='UNITED KI1'@en || ?s_city='UNITED KI5'@en))
 }
 GROUP BY ?c_city ?s_city ?year 
 ORDER BY ASC(?year) DESC(?lo_revenue) 

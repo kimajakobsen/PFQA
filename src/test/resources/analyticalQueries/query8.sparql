@@ -6,9 +6,9 @@ WHERE {
 	   :suppkey ?lo_suppkey ;
 	   :revenue ?_lo_revenue .
 
-	?lo_custkey :nation 'UNITED STATES' .
+	?lo_custkey :nation 'UNITED STATES'@en .
 	?lo_custkey :city ?c_city .
-	?lo_suppkey :nation 'UNITED STATES' .
+	?lo_suppkey :nation 'UNITED STATES'@en .
 	?lo_suppkey :city ?s_city . 
 	?lo_orderdate :year ?year .
 

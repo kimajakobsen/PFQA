@@ -11,8 +11,8 @@ WHERE {
 	?lo_suppkey :nation ?s_nation .
 	?lo_suppkey :region ?s_region . 
 	?lo_orderdate :year ?year .
-	FILTER(?c_region = 'ASIA')
-	FILTER(?s_region = 'ASIA')
+	FILTER(?c_region = 'ASIA'@en)
+	FILTER(?s_region = 'ASIA'@en)
 	FILTER(?year >= 1992 && ?year <= 1997)
 }
 GROUP BY ?c_nation ?s_nation ?year 

@@ -1,15 +1,16 @@
 PREFIX : <http://example.com/>
 SELECT (SUM(?_lo_revenue) AS ?lo_revenue) ?year ?p_brand1 
+#SELECT ?p_brand1 (substr(?p_brand1, 6) as ?str) ((?str >= substr('MFGR#221'@en,6)) as ?greaterThan )  ((?str <= substr('MFGR#2228'@en,6)) as ?lessThan)
 WHERE {
 	?li :orderdate ?lo_orderdate ;
 	   :partkey ?lo_partkey ;
 	   :suppkey ?lo_suppkey ;
 	   :revenue ?_lo_revenue .
 	?lo_partkey :brand ?p_brand1 .
-	?lo_suppkey :region 'ASIA' . 
+	?lo_suppkey :region 'ASIA'@en . 
 	?lo_orderdate :year ?year .
 
-	FILTER(STR(?p_brand1) >= 'MFGR#2221' && STR(?p_brand1) <= 'MFGR#2228')
+	FILTER(?p_brand1 >= 'MFGR#2221'@en && ?p_brand1 <= 'MFGR#2228'@en)
 }
 GROUP BY ?year ?p_brand1 
 ORDER BY ?year ?p_brand1

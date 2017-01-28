@@ -7,10 +7,10 @@ WHERE {
 	   :revenue ?_lo_revenue .
 
 	?lo_partkey :brand ?p_brand1 .
-	?lo_suppkey :region 'EUROPE' . 
+	?lo_suppkey :region 'EUROPE'@en . 
 	?lo_orderdate :year ?year .
 
-	FILTER (STR(?p_brand1) = 'MFGR#2239')
+	FILTER (?p_brand1 = 'MFGR#2239'@en)
 }
 GROUP BY ?year ?p_brand1 
 ORDER BY ?year ?p_brand1

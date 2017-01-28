@@ -1,5 +1,5 @@
 PREFIX : <http://example.com/>
-SELECT ?year ?s_city ?p_brand1 SUM(?lo_revenue - ?lo_supplycost) AS ?sum_profit 
+SELECT ?year ?s_city ?p_brand1 (SUM(?lo_revenue - ?lo_supplycost) AS ?sum_profit) 
 WHERE {
 	?li :orderdate ?lo_orderdate ;
 	   :custkey ?lo_custkey ;
@@ -8,10 +8,9 @@ WHERE {
 	   :revenue ?lo_revenue ;
 	   :supplycost ?lo_supplycost .
 
-	?lo_custkey :region 'AMERICA' .
 	?lo_suppkey :city ?s_city .
-	?lo_suppkey :nation 'UNITED STATES' .
-	?lo_partkey :category 'MFGR#14' .  
+	?lo_suppkey :nation 'UNITED STATES'@en .
+	?lo_partkey :category 'MFGR#14'@en .  
 	?lo_partkey :brand ?p_brand1 .
 	?lo_orderdate :year ?year .
 	FILTER(?year = 1997 || ?year = 1998)

@@ -1,15 +1,15 @@
 PREFIX : <http://example.com/>
-SELECT (SUM(?_lo_revenue) AS ?lo_revenue) ?year ?p_brand1 
+SELECT (SUM(?_revenue) AS ?revenue) ?year ?p_brand1 
 WHERE {
-	?li :orderdate ?lo_orderdate ;
-	   :partkey ?lo_partkey ;
-	   :suppkey ?lo_suppkey ;
-	   :revenue ?_lo_revenue .
+	?li :orderdate ?orderdate ;
+	   :partkey ?partkey ;
+	   :suppkey ?suppkey ;
+	   :revenue ?_revenue .
 
-	?lo_partkey :brand ?p_brand1 .
-	?lo_partkey :category 'MFGR#12' .
-	?lo_suppkey :region 'AMERICA' . 
-	?lo_orderdate :year ?year .
+	?partkey :brand ?p_brand1 .
+	?partkey :category 'MFGR#12'@en .
+	?suppkey :region 'AMERICA'@en . 
+	?orderdate :year ?year .
 }
 GROUP BY ?year ?p_brand1 
 ORDER BY ?year ?p_brand1
